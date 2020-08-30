@@ -1,0 +1,4 @@
+Makefile.depend
+cluster
+dot
+libdot_interface.a
