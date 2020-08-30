@@ -1,0 +1,635 @@
+max hack
+
+got 43.0 of 150.0 so far.
+progress: 100.00% (going for 6.46 minutes, about 0.00 minutes remaining)
+saving data /home/stefie10/dev/cogmac/tklib/data/directions/direction_floor_8/output/lenient/max_hack.output_0.pck
+Took 6.4673317194 minutes.
+svn:  14738
+host: squishy
+
+
+min_entropy, original
+got 55.0 of 150.0 so far.
+progress: 100.00% (going for 7.65 minutes, about 0.00 minutes remaining)
+saving data /home/stefie10/dev/cogmac/tklib/data/directions/direction_floor_8/output/lenient/min_entropy.output_31.pck
+Took 7.65659863154 minutes.
+svn:  14738
+host: squishy
+
+
+min_entropy, <= 1
+got 52.0 of 150.0 so far.
+progress: 100.00% (going for 6.72 minutes, about 0.00 minutes remaining)
+saving data /home/stefie10/dev/cogmac/tklib/data/directions/direction_floor_8/output/lenient/min_entropy.output_32.pck
+Took 6.72272616625 minutes.
+svn:  14738
+host: squishy
+
+      
+
+lda, p_ob1_given_obj2_marginalize_topics
+got 41.0 of 150.0 so far.
+progress: 100.00% (going for 6.12 minutes, about 0.00 minutes remaining)
+saving data /home/stefie10/dev/cogmac/tklib/data/directions/direction_floor_8/output/lenient/lda.output_0.pck
+Took 6.13099873463 minutes.
+svn:  14738
+host: squishy
+
+
+
+
+lda,with filtered model corpus thing
+got 46.0 of 150.0 so far.
+progress: 100.00% (going for 36.25 minutes, about 0.00 minutes remaining)
+saving data /home/stefie10/dev/cogmac/tklib/data/directions/direction_floor_8/output/lenient/lda.output_1.pck
+Took 36.2539979657 minutes.
+svn:  14738
+host: squishy
+r
+
+with multiple landmarks 
+got 45.0 of 150.0 so far.
+progress: 100.00% (going for 6.23 minutes, about 0.00 minutes remaining)
+saving data /home/stefie10/dev/cogmac/tklib/data/directions/direction_floor_8/output/lenient/lda.output_2.pck
+Took 6.23900969823 minutes.
+svn:  14738
+host: squishy
+
+tweaking backoff param
+got 45.0 of 150.0 so far.
+progress: 100.00% (going for 6.50 minutes, about 0.00 minutes remaining)
+saving data /home/stefie10/dev/cogmac/tklib/data/directions/direction_floor_8/output/lenient/lda.output_3.pck
+Took 6.50765339931 minutes.
+svn:  14738
+host: squishy
+
+lda with itags snapping to very small, and without along
+
+got 49.0 of 150.0 so far.
+progress: 100.00% (going for 4.15 minutes, about 0.00 minutes remaining)
+saving data /home/stefie10/dev/cogmac/tklib/data/directions/direction_floor_8/output/lenient/lda.output_4.pck
+Took 4.15714675188 minutes.
+svn:  14738
+host: squishy
+
+
+min_entropy with itags snapping
+got 55.0 of 150.0 so far.
+progress: 100.00% (going for 4.87 minutes, about 0.00 minutes remaining)
+saving data /home/stefie10/dev/cogmac/tklib/data/directions/direction_floor_8/output/lenient/min_entropy.output_33.pck
+Took 4.8778314511 minutes.
+svn:  14738
+host: squishy
+
+
+lda with keywords zapped
+got 52.0 of 150.0 so far.
+progress: 100.00% (going for 3.51 minutes, about 0.00 minutes remaining)
+saving data /home/stefie10/dev/cogmac/tklib/data/directions/direction_floor_8/output/lenient/lda.output_5.pck
+Took 3.51449075143 minutes.
+svn:  14738
+host: squishy
+
+
+min entropy with keywords zapped
+got 48.0 of 150.0 so far.
+progress: 100.00% (going for 4.20 minutes, about 0.00 minutes remaining)
+saving data /home/stefie10/dev/cogmac/tklib/data/directions/direction_floor_8/output/lenient/min_entropy.output_34.pck
+Took 4.20811586777 minutes.
+svn:  14738
+host: squishy
+
+
+
+
+lda with keywords zapped, newest model 1800
+got 55.0 of 150.0 so far.
+progress: 100.00% (going for 3.57 minutes, about 0.00 minutes remaining)
+saving data /home/stefie10/dev/cogmac/tklib/data/directions/direction_floor_8/output/lenient/lda.output_6.pck
+Took 3.57845968405 minutes.
+svn:  14738
+host: squishy
+
+
+lda with more keywords zapped
+got 58.0 of 150.0 so far.
+progress: 100.00% (going for 3.40 minutes, about 0.00 minutes remaining)
+saving data /home/stefie10/dev/cogmac/tklib/data/directions/direction_floor_8/output/lenient/lda.output_7.pck
+Took 3.40631544987 minutes.
+svn:  14738
+host: squishy
+
+
+
+lda with polygon landmarks
+got 58.0 of 150.0 so far.
+progress: 100.00% (going for 3.40 minutes, about 0.00 minutes remaining)
+saving data /home/stefie10/dev/cogmac/tklib/data/directions/direction_floor_8/output/lenient/lda.output_11.pck
+Took 3.40740971565 minutes.
+svn:  14837
+host: squishy
+
+
+
+lda with polygon landmarks, plus rooms and hallways
+progress: 100.00% (going for 3.49 minutes, about 0.00 minutes remaining)
+saving data /home/stefie10/dev/cogmac/tklib/data/directions/direction_floor_8/output/lenient/lda.output_12.pck
+Took 3.49520563285 minutes.
+svn:  14837
+host: squishy
+
+lda with polygon landmarks, plus rooms and hallways, new srel mat fname
+got 45.0 of 150.0 so far.
+progress: 100.00% (going for 3.40 minutes, about 0.00 minutes remaining)
+saving data /home/stefie10/dev/cogmac/tklib/data/directions/direction_floor_8/output/lenient/lda.output_13.pck
+Took 3.40125858386 minutes.
+svn:  14837
+host: squishy
+
+
+regular lda
+got 58.0 of 150.0 so far.
+progress: 100.00% (going for 3.33 minutes, about 0.00 minutes remaining)
+saving data /home/stefie10/dev/cogmac/tklib/data/directions/direction_floor_8/output/lenient/lda.output_14.pck
+Took 3.33260315259 minutes.
+svn:  14837
+host: squishy
+
+
+min entropy, using itags,polygons
+got 54.0 of 150.0 so far.
+progress: 100.00% (going for 5.27 minutes, about 0.00 minutes remaining)
+saving data /home/stefie10/dev/cogmac/tklib/data/directions/direction_floor_8/output/lenient/min_entropy.output_35.pck
+Took 5.28520930211 minutes.
+svn:  14837
+host: squishy
+
+
+min entropy, using itags only
+got 55.0 of 150.0 so far.
+progress: 100.00% (going for 4.77 minutes, about 0.00 minutes remaining)
+saving data /home/stefie10/dev/cogmac/tklib/data/directions/direction_floor_8/output/lenient/min_entropy.output_36.pck
+Took 4.77125718196 minutes.
+svn:  14837
+host: squishy
+
+
+
+
+d1
+got 3.0 of 35.0 so far.
+progress: 100.00% (going for 1.03 minutes, about 0.00 minutes remaining)
+saving data /home/stefie10/dev/cogmac/tklib/data/directions/direction_floor_8/output/lenient/min_entropy.output_16.pck
+Took 1.03141381343 minutes.
+svn:  14946
+host: octopus
+
+
+
+d8 with shortest path 
+got 52.0 of 150.0 so far.
+progress: 100.00% (going for 12.99 minutes, about 0.00 minutes remaining)
+saving data /home/stefie10/dev/cogmac/tklib/data/directions/direction_floor_8/output/lenient/min_entropy.output_38.pck
+Took 12.997659866 minutes.
+svn:  14948
+host: squishy
+
+d8 with shorest path code in but commented out
+perfect
+
+d8 with lda with stemmer, Gibbs # 2000, 100 topics
+got 48.0 of 150.0 so far.
+progress: 100.00% (going for 3.43 minutes, about 0.00 minutes remaining)
+saving data /home/stefie10/dev/cogmac/tklib/data/directions/direction_floor_8/output/lenient/lda.output_15.pck
+Took 3.43585635026 minutes.
+svn:  14974
+host: squishy
+
+d8 with lda with stemmer, Gibbs # 1000, 100 topics
+got 43.0 of 150.0 so far.
+progress: 100.00% (going for 3.55 minutes, about 0.00 minutes remaining)
+saving data /home/stefie10/dev/cogmac/tklib/data/directions/direction_floor_8/output/lenient/lda.output_16.pck
+Took 3.55834165017 minutes.
+svn:  14974
+host: squishy
+
+
+d8 lda with stemmer, Gibbs # 2000, 200 topics
+got 34.0 of 150.0 so far.
+progress: 100.00% (going for 3.29 minutes, about 0.00 minutes remaining)
+saving data /home/stefie10/dev/cogmac/tklib/data/directions/direction_floor_8/output/lenient/lda.output_17.pck
+Took 3.30018096368 minutes.
+svn:  14974
+host: squishy
+stefie10@squishy:~/
+
+
+d8 lda with stemmer, Gibbs # 2000, 200 topics, stemming on the inside
+got 39.0 of 150.0 so far.
+progress: 100.00% (going for 3.94 minutes, about 0.00 minutes remaining)
+saving data /home/stefie10/dev/cogmac/tklib/data/directions/direction_floor_8/output/lenient/lda.output_18.pck
+Took 3.94613431692 minutes.
+svn:  14974
+host: squishy
+
+
+lda on d1, old version (no stemmer), with shortest path
+got 5.0 of 35.0 so far.
+progress: 100.00% (going for 0.81 minutes, about 0.00 minutes remaining)
+saving data /home/stefie10/dev/cogmac/tklib/data/directions/direction_floor_8/output/lenient/lda.output_0.pck
+Took 0.817299000422 minutes.
+svn:  14976
+host: octopus
+
+
+d8 with lda with stemmer, Gibbs # 2000, 100 topics, stemming on the inside
+got 53.0 of 150.0 so far.
+progress: 100.00% (going for 3.46 minutes, about 0.00 minutes remaining)
+saving data /home/stefie10/dev/cogmac/tklib/data/directions/direction_floor_8/output/lenient/lda.output_19.pck
+Took 3.4660208861 minutes.
+svn:  14974
+host: squishy
+
+
+
+
+
+
+min_entropy, without shortest path, with last tmap
+got 55.0 of 150.0 so far.
+progress: 100.00% (going for 4.93 minutes, about 0.00 minutes remaining)
+saving data /home/stefie10/dev/cogmac/tklib/data/directions/direction_floor_8/output/lenient/min_entropy.output_41.pck
+Took 4.93441585302 minutes.
+svn:  14974
+host: squishy
+
+
+duplicate_sdcs, with the full SDC duplicated, and without kwsdc, and adding 3 sdcs
+fails miserably, not letting it finish
+
+
+lda on d1, old version (no stemmer), without shortest path, with last tmap. 
+got 7.0 of 35.0 so far.
+progress: 100.00% (going for 0.88 minutes, about 0.00 minutes remaining)
+saving data /home/stefie10/dev/cogmac/tklib/data/directions/direction_floor_8/output/lenient/lda.output_1.pck
+Took 0.892840480804 minutes.
+svn:  14976
+host: octopus
+
+
+lda on d1, with stemmer, with last tmap. 
+got 7.0 of 35.0 so far.
+progress: 100.00% (going for 5.24 minutes, about 0.00 minutes remaining)
+saving data /home/stefie10/dev/cogmac/tklib/data/directions/direction_floor_8/output/lenient/lda.output_20.pck
+Took 5.24293676615 minutes.
+svn:  14974
+host: squishy
+
+lda on d1, with stemmer, without last tmap
+got 7.0 of 35.0 so far.
+progress: 100.00% (going for 5.11 minutes, about 0.00 minutes remaining)
+saving data /home/stefie10/dev/cogmac/tklib/data/directions/direction_floor_8/output/lenient/lda.output_21.pck
+Took 5.11442376375 minutes.
+svn:  14974
+host: squishy
+
+
+lda on d1, old version (no stemmer), with shortest path and 3x sdcs
+got 2.0 of 35.0 so far.
+progress: 100.00% (going for 1.82 minutes, about 0.00 minutes remaining)
+saving data /home/stefie10/dev/cogmac/tklib/data/directions/direction_floor_8/output/lenient/lda.output_2.pck
+Took 1.82658193111 minutes.
+svn:  14989
+host: octopus
+
+
+lda on d1, old version (no stemmer), with shortest path and 2x sdcs
+got 2.0 of 35.0 so far.
+progress: 100.00% (going for 1.14 minutes, about 0.00 minutes remaining)
+saving data /home/stefie10/dev/cogmac/tklib/data/directions/direction_floor_8/output/lenient/lda.output_3.pck
+Took 1.14933878183 minutes.
+svn:  14989
+host: octopus
+
+lda on d1, old version (no stemmer), with shortest path and 1x sdcs
+got 0.0 of 35.0 so far.
+progress: 100.00% (going for 1.05 minutes, about 0.00 minutes remaining)
+saving data /home/stefie10/dev/cogmac/tklib/data/directions/direction_floor_8/output/lenient/lda.output_4.pck
+Took 1.06081628402 minutes.
+svn:  14989
+host: octopus
+
+lda on d1, old version (no stemmer), with shortest path and original sdcs
+got 0.0 of 35.0 so far.
+progress: 100.00% (going for 0.77 minutes, about 0.00 minutes remaining)
+saving data /home/stefie10/dev/cogmac/tklib/data/directions/direction_floor_8/output/lenient/lda.output_5.pck
+Took 0.778978315989 minutes.
+svn:  14989
+host: octopus
+
+lda on d1, old version (no stemmer), without shortest path and original sdcs
+got 5.0 of 35.0 so far.
+progress: 100.00% (going for 0.77 minutes, about 0.00 minutes remaining)
+saving data /home/stefie10/dev/cogmac/tklib/data/directions/direction_floor_8/output/lenient/lda.output_6.pck
+Took 0.775344796975 minutes.
+svn:  14989
+host: octopus
+
+lda on d1, with shortest path
+got 6.0 of 35.0 so far.
+progress: 100.00% (going for 1.37 minutes, about 0.00 minutes remaining)
+saving data /home/stefie10/dev/cogmac/tklib/data/directions/direction_floor_8/output/lenient/lda.output_8.pck
+Took 1.37335073153 minutes.
+svn:  14989
+host: octopus
+
+
+lda on d1, with shortest path, and more sdcs
+got 9.0 of 35.0 so far.
+progress: 100.00% (going for 1.51 minutes, about 0.00 minutes remaining)
+saving data /home/stefie10/dev/cogmac/tklib/data/directions/direction_floor_8/output/lenient/lda.output_9.pck
+Took 1.51132853429 minutes.
+svn:  14989
+host: octopus
+
+
+
+lda on d8, same conditions
+got 38.0 of 150.0 so far.
+progress: 100.00% (going for 1.41 minutes, about 0.00 minutes remaining)
+saving data /home/stefie10/dev/cogmac/tklib/data/directions/direction_floor_8/output/lenient/lda.output_10.pck
+Took 1.4222854495 minutes.
+svn:  14989
+host: octopus
+
+
+
+lda on d8_full, same conditions
+got 2.0 of 150.0 so far.
+progress: 100.00% (going for 3.16 minutes, about 0.00 minutes remaining)
+saving data /home/stefie10/dev/cogmac/tklib/data/directions/direction_floor_8_full/output/specialized/lda.output_0.pck
+Took 3.17378481627 minutes.
+svn:  14989
+host: octopus
+
+min_entropy on d1, same conditions
+got 9.0 of 35.0 so far.
+progress: 100.00% (going for 2.07 minutes, about 0.00 minutes remaining)
+saving data /home/stefie10/dev/cogmac/tklib/data/directions/direction_floor_8/output/lenient/lda.output_11.pck
+Took 2.07643283606 minutes.
+svn:  14989
+host: octopus
+
+
+lda on d8_full, original
+got 19.0 of 150.0 so far.
+progress: 100.00% (going for 19.12 minutes, about 0.00 minutes remaining)
+saving data /home/stefie10/dev/cogmac/tklib/data/directions/direction_floor_8_full/output/specialized/lda.output_0.pck
+Took 19.1248819828 minutes.
+svn:  14974
+host: squishy
+
+min_entropy on d8_full, original
+got 41.0 of 150.0 so far.
+progress: 100.00% (going for 10.90 minutes, about 0.00 minutes remaining)
+saving data /home/stefie10/dev/cogmac/tklib/data/directions/direction_floor_8_full/output/specialized/min_entropy.output_0.pck
+Took 10.9110051155 minutes.
+svn:  14974
+host: squishy
+
+
+min_entropy, d1, with shortest path
+got 3.0 of 35.0 so far.
+progress: 100.00% (going for 1.11 minutes, about 0.00 minutes remaining)
+saving data /home/stefie10/dev/cogmac/tklib/data/directions/direction_floor_8/output/lenient/min_entropy.output_20.pck
+Took 1.11815258265 minutes.
+svn:  15019
+host: octopus
+
+min_entropy, d1, without shortest path
+got 3.0 of 35.0 so far.
+progress: 100.00% (going for 1.97 minutes, about 0.00 minutes remaining)
+saving data /home/stefie10/dev/cogmac/tklib/data/directions/direction_floor_8/output/lenient/min_entropy.output_21.pck
+Took 1.98093525171 minutes.
+svn:  15019
+host: octopus
+
+
+lda on d1, without shortest path
+got 5.0 of 35.0 so far.
+progress: 100.00% (going for 0.88 minutes, about 0.00 minutes remaining)
+saving data /home/stefie10/dev/cogmac/tklib/data/directions/direction_floor_8/output/lenient/lda.output_12.pck
+Took 0.881888568401 minutes.
+svn:  15019
+host: octopus
+
+lda on d1, with shortest path, duplicate sdcs
+got 8.0 of 35.0 so far.
+progress: 100.00% (going for 2.34 minutes, about 0.00 minutes remaining)
+saving data /home/stefie10/dev/cogmac/tklib/data/directions/direction_floor_8/output/lenient/lda.output_15.pck
+Took 2.35000363588 minutes.
+svn:  15019
+host: octopus
+
+duplicate_landmarkson d1 with path
+got 1.0 of 35.0 so far.
+progress: 100.00% (going for 2.13 minutes, about 0.00 minutes remaining)
+saving data /home/stefie10/dev/cogmac/tklib/data/directions/direction_floor_8/output/lenient/duplicate_landmarks.output_0.pck
+Took 2.13609556754 minutes.
+svn:  15019
+host: octopus
+
+
+min_entropy, d8_full, +sr
+got 46.0 of 150.0 so far.
+progress: 100.00% (going for 14.98 minutes, about 0.00 minutes remaining)
+saving data /home/stefie10/dev/cogmac/tklib/data/directions/direction_floor_8_full/output/specialized/min_entropy.output_1.pck
+Took 14.9985035976 minutes.
+svn:  15013
+host: squishy
+
+
+min_entropy, d8_full, -sr
+got 35.0 of 150.0 so far.
+progress: 100.00% (going for 23.95 minutes, about 0.00 minutes remaining)
+saving data /home/stefie10/dev/cogmac/tklib/data/directions/direction_floor_8_full/output/specialized/min_entropy.output_2.pck
+Took 23.9645530343 minutes.
+svn:  15013
+host: squishy
+
+
+min_entropy, d8_full
+got 60.0 of 150.0 so far.
+progress: 100.00% (going for 13.10 minutes, about 0.00 minutes remaining)
+saving data /home/stefie10/dev/cogmac/tklib/data/directions/direction_floor_8_full/output/specialized/min_entropy_extended.output_0.pck
+Took 13.1156429013 minutes.
+svn:  15029
+host: squishy
+
+min_entropy, d8_full, itags
+got 60.0 of 150.0 so far.
+progress: 100.00% (going for 12.99 minutes, about 0.00 minutes remaining)
+saving data /home/stefie10/dev/cogmac/tklib/data/directions/direction_floor_8_full/output/specialized/min_entropy_extended.output_1.pck
+Took 13.0005627513 minutes.
+svn:  15029
+host: squishy
+
+min_entropy, d8_full, itags and duplicate SDCs
+got 68.0 of 150.0 so far.
+progress: 100.00% (going for 20.88 minutes, about 0.00 minutes remaining)
+saving data /home/stefie10/dev/cogmac/tklib/data/directions/direction_floor_8_full/output/specialized/min_entropy_extended.output_2.pck
+Took 20.8978314161 minutes.
+svn:  15029
+host: squishy
+
+
+min_entropy_extended, d1
+got 3.0 of 35.0 so far.
+progress: 100.00% (going for 2.89 minutes, about 0.00 minutes remaining)
+saving data /home/stefie10/dev/cogmac/tklib/data/directions/direction_floor_8/output/lenient/min_entropy_extended.output_0.pck
+Took 2.90681130091 minutes.
+svn:  15041
+host: octopus
+stefie10@octop
+
+
+min_entropy_extended, d8, -sr
+58/150, forgot to copy log
+
+
+df1, min_entropy_extended
+got 4.0 of 35.0 so far.
+progress: 100.00% (going for 2.88 minutes, about 0.00 minutes remaining)
+saving data /home/stefie10/dev/cogmac/tklib/data/directions/direction_floor_8/output/lenient/min_entropy_extended.output_1.pck
+Took 2.88651351531 minutes.
+svn:  15042
+host: octopus
+
+
+d8, min_entropy_extended
+got 73.0 of 150.0 so far.
+progress: 100.00% (going for 10.51 minutes, about 0.00 minutes remaining)
+saving data /home/stefie10/dev/cogmac/tklib/data/directions/direction_floor_8_full/output/specialized/min_entropy_extended.output_3.pck
+Took 10.5764348666 minutes.
+svn:  15050
+host: octopus
+
+d8, min_entropy_extended, with sr_field copied
+got 71.0 of 150.0 so far.
+progress: 100.00% (going for 19.13 minutes, about 0.00 minutes remaining)
+saving data /home/stefie10/dev/cogmac/tklib/data/directions/direction_floor_8_full/output/specialized/min_entropy_extended.output_4.pck
+Took 19.2363615354 minutes.
+svn:  15050
+host: octopus
+
+
+d8, min_entropy_extended, with sr_field copied, simplified kwsdcs.
+got 71.0 of 150.0 so far.
+progress: 100.00% (going for 11.40 minutes, about 0.00 minutes remaining)
+saving data /home/stefie10/dev/cogmac/tklib/data/directions/direction_floor_8_full/output/specialized/min_entropy_extended.output_6.pck
+Took 11.5217501998 minutes.
+svn:  15050
+host: octopus
+
+
+d8, min_entropy_extended, with sr_field not copied
+got 70.0 of 150.0 so far.
+progress: 100.00% (going for 7.79 minutes, about 0.00 minutes remaining)
+saving data /home/stefie10/dev/cogmac/tklib/data/directions/direction_floor_8_full/output/specialized/min_entropy_extended.output_7.pck
+Took 7.81691983143 minutes.
+svn:  15064
+host: octopus
+
+
+
+d8, min_entropy_extended, 3x duplicates
+got 62.0 of 150.0 so far.
+progress: 100.00% (going for 252.29 minutes, about 0.00 minutes remaining)
+saving data /home/stefie10/dev/cogmac/tklib/data/directions/direction_floor_8_full/output/specialized/min_entropy_extended.output_9.pck
+Took 253.064503217 minutes.
+svn:  15064
+host: octopus
+
+
+d1, with new tags
+got 15.0 of 35.0 so far.
+progress: 100.00% (going for 12.04 minutes, about 0.00 minutes remaining)
+saving data /home/stefie10/dev/cogmac/tklib/data/directions/direction_floor_1/output/min_entropy_extended.output_1.pck
+Took 12.0428482533 minutes.
+svn:  15065
+
+
+d8_full, with rooms and hallways
+got 69.0 of 150.0 so far.
+progress: 100.00% (going for 42.05 minutes, about 0.00 minutes remaining)
+saving data /home/stefie10/dev/cogmac/tklib/data/directions/direction_floor_8_full/output/specialized/min_entropy_extended.output_5.pck
+Took 42.0586548646 minutes.
+svn:  15070
+host: squishy
+
+
+d8_full, with rooms and hallways, polygons
+got 65.0 of 150.0 so far.
+progress: 100.00% (going for 39.87 minutes, about 0.00 minutes remaining)
+saving data /home/stefie10/dev/cogmac/tklib/data/directions/direction_floor_8_full/output/specialized/min_entropy_extended.output_6.pck
+Took 39.9083400846 minutes.
+svn:  15070
+host: squishy
+
+
+hri2010_greedy_twostep 
+got 22.0 of 150.0 so far.
+progress: 100.00% (going for 9.19 minutes, about 0.00 minutes remaining)
+saving data /home/stefie10/dev/cogmac/tklib/data/directions/direction_floor_8/output/lenient/hri2010_greedy_2step.output_0.pck
+Took 9.19505026738 minutes.
+svn:  15126
+host: squishy
+
+with rooms and hallways
+got 68.0 of 150.0 so far.
+progress: 100.00% (going for 28.06 minutes, about 0.00 minutes remaining)
+saving data /home/stefie10/dev/cogmac/tklib/data/directions/direction_floor_8_full/output/specialized/min_entropy_extended.output_1.pck
+Took 28.2501623511 minutes.
+svn:  15114
+host: oneofthem
+
+
+with rooms and hallways, polygons, down
+got 65.0 of 150.0 so far.
+progress: 100.00% (going for 31.75 minutes, about 0.00 minutes remaining)
+saving data /home/stefie10/dev/cogmac/tklib/data/directions/direction_floor_8_full/output/specialized/min_entropy_extended.output_2.pck
+Took 31.9349135359 minutes.
+svn:  15114
+host: oneofthem
+
+
+greedy with min_entropy_extended
+got 14.0 of 150.0 so far.
+progress: 100.00% (going for 31.13 minutes, about 0.00 minutes remaining)
+saving data /home/stefie10/dev/cogmac/tklib/data/directions/direction_floor_8_full/output/specialized/greedy.output_0.pck
+Took 31.1503008803 minutes.
+svn:  15126
+host: squishy
+
+
+greedy with min_entropy_extended, fewer epsilons
+got 11.0 of 150.0 so far.
+progress: 100.00% (going for 20.54 minutes, about 0.00 minutes remaining)
+saving data /home/stefie10/dev/cogmac/tklib/data/directions/direction_floor_8_full/output/specialized/greedy.output_1.pck
+Took 20.5566064159 minutes.
+svn:  15126
+host: squishy
+stefie10@squis
+
+
+
+greedy, d8_full
+got 14.0 of 150.0 so far.
+progress: 100.00% (going for 39.56 minutes, about 0.00 minutes remaining)
+saving data /home/stefie10/dev/cogmac/tklib/data/directions/direction_floor_8_full/output/specialized/greedy.output_5.pck
+Took 39.5905398488 minutes.
+svn:  15230
+host: squishy
+
+
+

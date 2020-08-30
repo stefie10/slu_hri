@@ -1,0 +1,295 @@
+bfrom scipy import *
+from pyTklib import tklib_du_update_log
+from pyTklib import tklib_du_get_path
+from pyTklib import tklib_du_marginalize_log
+import numpy as na
+
+class hri2010_log_gm:
+    #the last argument could ostensibly be made optional, but speeds things up in practice
+    #    because it reduces the size of the spatial relation matrix
+    def __init__(self, sdcs, T_seq, O_seq, SR_seq, L_seq, mypi, 
+                 state_names, vp_i_to_topo_i, topo_i_to_location_mask, path_lengths, 
+                 num_topo_regions, D_seq=None, allow_multiple_sdcs_per_transition=False, 
+                 allow_backtracking=False):
+        
+        self.T_seq = T_seq
+        self.O_seq = O_seq #multipliers in the factorization of SDC probs.
+        self.D_seq = D_seq
+        self.SR_seq = SR_seq
+        self.L_seq = L_seq
+        self.mypi = mypi
+        self.state_names = state_names
+        self.vp_i_to_topo_i  = vp_i_to_topo_i + 0.0 # convert to float
+        self.num_topo_regions = num_topo_regions
+        self.path_lengths = path_lengths
+        if self.path_lengths == None: 
+            self.path_lengths = array([[]])
+        
+        self.sdcs = sdcs
+        self.allow_multiple_sdcs_per_transition = allow_multiple_sdcs_per_transition
+        self.topo_i_to_location_mask = topo_i_to_location_mask
+        self.allow_backtracking = allow_backtracking
+        self.save_update_args = False
+        
+
+    def inference_approx(self):
+        print "save update args", self.save_update_args
+        self.log_update_args = []
+        if(not len(self.O_seq) == len(self.T_seq)):
+            print "error: observation sequence and transition matrix sequence not of equal length"
+            exit(0)
+        
+        #probabilities Pr[vp1,vp2]
+        P_prev_log = log(zeros([len(self.state_names), len(self.state_names)])*1.0)
+        for i in range(len(self.mypi)):
+            P_prev_log[:,i] = log(self.mypi[i])
+            #P_prev[i,:] = self.mypi[i]
+
+        parents = zeros([len(self.state_names), len(self.T_seq)-1])-100
+        used_epsilons = zeros((len(self.T_seq), len(self.state_names), len(self.state_names))) - 100
+        #apply the first observation here
+        #compute the initialization of the parameters
+        #print "starting viterbi"
+        #do the viterbi-style update
+        for i in range(len(self.T_seq)):
+            #print "update", i
+            if(not len(self.SR_seq) == 0 and not self.SR_seq[i] == None):
+                SR_reshape = self.SR_seq[i].reshape([len(self.SR_seq[i])*len(self.SR_seq[i][0]), 
+                                                     len(self.SR_seq[i][0][0])])
+                L_curr = self.L_seq[i].astype(float)
+            else:
+                SR_reshape = array([[]])
+                L_curr = array([])
+            
+            #we want the previous transition matrix
+            if(not i==0):
+                T_mat_prev = self.T_seq[i-1]
+            else:
+                T_mat_prev = array([[]])
+
+            T_curr = self.T_seq[i]
+            if T_curr == None:
+                T_curr = array([[]])
+            
+            #O_mat will be none if we don't see a keyword, but we do see
+            #  a transition
+            if(self.O_seq[i] == None):
+                O_mat = array([])
+            else:
+                O_mat = self.O_seq[i]
+                
+            if(self.D_seq == None or self.D_seq[i] == None):
+                D_mat = array([[]])
+            else:
+                D_mat = self.D_seq[i]
+            
+
+            if(i>1):
+                myparents = parents[:,0:i-1]
+            else:
+                myparents = [[]]
+
+            if i >= 1:
+                my_used_epsilons = used_epsilons[0:i]
+                my_used_epsilons = my_used_epsilons.reshape(i*len(self.state_names), len(self.state_names))
+            else:
+                my_used_epsilons = [[]]
+
+
+            sdc = self.sdcs[i]
+
+            if sdc["landmark"] == "EPSILON":
+                sdc_is_epsilon = True
+            else:
+                sdc_is_epsilon = False
+
+            #print "shape(T_curr):", shape(T_curr)
+            #sleep(0.5)
+            
+            #print myparents
+            # cache the arguments so the gui can display them later. 
+            #print "at location ",i, " -->max previous probability:", P_prev_log.max()
+            #raw_input("test")
+            #sleep(0.1)
+            #print "direction matrix", D_mat
+            #topo_to_location_mask=self.topo_i_to_location_mask,
+            
+            #print "variable:",  self.topo_i_to_location_mask
+
+            updateArgs = dict(P_log_prev=P_prev_log,
+                              myparents=myparents,
+                              used_epsilons=my_used_epsilons,
+                              T_log_curr=log(T_curr),
+                              SR_log_curr=log(SR_reshape+10e-6),
+                              D_log_curr=log(D_mat),
+                              L_log_curr=log(L_curr+10e-6),
+                              O_log_curr=log(O_mat+10e-6),
+                              vp_index_to_topo_index=self.vp_i_to_topo_i,
+                              topo_i_to_location_mask=self.topo_i_to_location_mask,
+                              path_lengths = self.path_lengths,
+                              num_topologies=self.num_topo_regions,
+                              allow_multiple_sdcs_per_transition=self.allow_multiple_sdcs_per_transition,
+                              sdc_is_epsilon=sdc_is_epsilon,
+                              allow_backtracking=self.allow_backtracking,
+                              max_epsilon_transitions=-1
+                              )
+            if self.save_update_args:
+                self.log_update_args.append(updateArgs)
+            
+            #print updateArgs
+            #Now perform an update in C because its much faster
+            out = tklib_du_update_log(**updateArgs)
+            #updateArgs["T_curr"]=self.T_seq[i] # for the gui
+            
+            mymat = array(out)
+            
+            ###########
+            P_prev_log = mymat[0:len(P_prev_log), 0:len(P_prev_log[0])]
+            updateArgs["P_log_curr"] = P_prev_log # save state for the browser
+            
+            if(i>0):
+                parents[:,i-1] = mymat[-1,:]
+            used_epsilons[i] = mymat[len(P_prev_log):len(P_prev_log)*2, 0:len(P_prev_log[0])]
+
+        #print "previous probability final:", P_prev_log.max()
+        #sleep(3)
+        
+        #for debug: remove next line
+#        print "P_prev_log",P_prev_log
+        
+        #get the final best index after applying the last
+        # transition 
+        curr_best_path = None
+        l_p_best = log(0)
+        for v1_i in range(len(self.state_names)):
+            for v2_i in range(len(self.state_names)):
+                #p_new = P_prev[v1_i,v2_i]*self.T_seq[-1][v2_i,v1_i]
+                l_p_new = P_prev_log[v1_i,v2_i]
+                if(l_p_new > l_p_best):
+                    l_p_best = l_p_new
+                    curr_best_path = [v2_i, v1_i]
+        
+        #print "diag(T_mat)", diag(T_mat_prev)
+        #print "curr_best_path", curr_best_path
+        #        print "epsilon", was_epsilons[32, 1]
+        if self.save_update_args:
+            self.update_args = [convert_to_probs(args) 
+                                for args in self.log_update_args]
+
+        #print "best l_prob:", l_p_best
+        #if there is no probability of a path, return nothing
+        #if there is no reasonable path, then return nothing
+        if(curr_best_path == None or l_p_best == log(0)):
+            return [], l_p_best
+
+        #get the best location
+        best_i = tklib_du_get_path(parents, 
+                                   curr_best_path[-1], 
+                                   len(parents[0])-1)
+        best_i.append(curr_best_path[0])
+        self.used_epsilons = used_epsilons
+        #print "path", best_i
+        print "best", best_i
+        if len(best_i) == 1:
+            best_i.insert(0, na.argmax(self.mypi[0:]))
+        return self.state_names.take(best_i), exp(l_p_best)
+
+    def inference_sum_product(self):
+        
+#        raise "Potentially broke because of untested refactoring to use log probabliities."
+    
+        
+        if (not len(self.O_seq) == len(self.T_seq)) :
+            print "error: observation sequence and transition matrix sequence not of equal length"
+            exit(0)
+        
+
+        p_prev_log = log(self.mypi)
+        print "PRIOR PROBS: ",p_prev_log
+
+        #apply the first observation here
+        #compute the initialization of the parameters
+        print "starting sum-product"
+        #do the viterbi-style update
+        for i in range(len(self.T_seq)):
+            if(not len(self.SR_seq) == 0 and not self.SR_seq[i] == None):
+                SR_reshape = self.SR_seq[i].reshape([len(self.SR_seq[i])*len(self.SR_seq[i][0]), 
+                                                     len(self.SR_seq[i][0][0])])
+                L_curr = self.L_seq[i].astype(float)
+            else:
+                SR_reshape = array([[]])
+                L_curr = array([])
+            
+            #O_mat will be none if we don't see a keyword, but we do see
+            #  a transition
+            if(self.O_seq[i] == None):
+                O_mat = array([])
+            else:
+                O_mat = self.O_seq[i]
+
+            if(self.D_seq == None or self.D_seq[i] == None):
+                D_mat = array([[]])
+            else:
+                D_mat = self.D_seq[i]
+            
+            updateArgs = dict(prev_message=p_prev_log,
+                  T_log_curr=log(self.T_seq[i]),
+                  SR_log_curr=na.log(SR_reshape+10e-6),
+                  D_log_curr=na.log(D_mat),
+                  L_log_curr=na.log(L_curr+10e-6),
+                  O_log_curr=na.log(O_mat+10e-6),
+                  vp_i_to_topo_i=self.vp_i_to_topo_i,
+                  num_topologies=int(self.num_topo_regions)
+                  )
+            
+            out = tklib_du_marginalize_log(**updateArgs)
+            p_prev_log = array(out)
+            print "UPDATED PROBS: ", p_prev_log 
+            # cache the arguments so the gui can display them later. 
+#            p_prev = tklib_du_marginalize_log(p_prev, 
+#                                              self.T_seq[i],
+#                                              na.log(SR_reshape+10e-6),
+#                                              na.log(D_mat), 
+#                                              na.log(L_curr+10e-6),
+#                                              na.log(O_mat+10e-6),
+#                                              self.vp_i_to_topo_i, 
+#                                              self.num_topo_regions)
+
+                                                   
+        i = argmax(p_prev_log)
+        return [self.state_names[i]], p_prev_log[i], p_prev_log
+        
+
+
+def convert_to_probs(update_arg):
+    newmap = {}
+    for key, value in update_arg.iteritems():
+        if "_log_" in key:
+            newkey = "".join(key.split("_log"))
+            newmap[newkey] = exp(value)
+        else:
+            newmap[key] = value
+    return newmap
+    
+    
+#def du_marginalize_log(prev_message,
+#				     T_log_curr,
+#				     SR_log_curr,
+#				     D_log_curr,
+#				     L_log_curr,
+#				     O_log_curr, 
+#				     vp_i_to_topo_i, 
+#				     num_topologies):
+#    ret_msg = [0 for i in range(len(prev_message))]
+#    
+#    num_viewpoints = len(vp_i_to_topo_i)
+#    
+#    for vp2_i in range(num_viewpoints):
+#        mysum = 0.0
+#        for vp_1 in range(num_viewpoints):
+#            if T_log_curr!=None and 
+        
+				     
+				     
+				     
+				     

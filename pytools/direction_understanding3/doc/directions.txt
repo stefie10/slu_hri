@@ -1,0 +1,37 @@
+
+Works:
+
+works, starting from  away from the elevators
+R16 Go straight away from the door that says CSAIL, passing a room on your right with doors saying MIT Libraries.  Turn left, going around the cafe and walk towards the cow. 
+
+works, starting from  away from the elevators
+R16 Walk past the library and tables till you see a cafe to the left. Walk past the cafe and there will be other eateries.  Head into this area. 
+
+works, starting from  away from the elevators
+R16 Turn right and walk past the libraries.  Keep going straight and on the left near the end of the hallway there is a set of doors that say Children's technology center.  You are at the destination. 
+
+works
+84.129, 54.321, 1.600
+0.512
+R11 Take a left turn and walk straight until you see a large mural.  Take a left turn here and keep going until you see a gym.
+
+
+83.527, 23.909, 1.100
+1.504
+R22 Stand with your back to the exit doors.  Pass the cafe on your right.  Make a right directly after the cafe, and into a seating area.  Walk towards the big question mark. 
+
+
+with awkward paths:
+
+
+With awkward path:
+R17 Face away from glass doors, and walk straight following left wall. You will pass stairs and elevators on your left; keep going until you see a door with "123" written in large letters above it. 
+
+with awkward path
+R17 Walk away from the cafeteria so you are walking down the hall in the direction of the recycling and AED system.  Go into the door on the yellow wall to the right with 123 over it.        
+
+with awkward path.
+77.974, 76.368, 1.100
+-1.080
+R7 Head toward the library.  The road forks, so go right and continue past the coffee shop till your reach the doors to the exit.
+

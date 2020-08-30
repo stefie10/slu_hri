@@ -1,0 +1,8 @@
+package arlcm;
+
+struct comment_t
+{
+    int64_t utime; 
+
+    string comment; // text of comment
+}

@@ -1,0 +1,17 @@
+
+
+==============
+About actions:
+--------------
+An action should be described by a dictionary.
+
+suppose A is an action:
+
+A["action"] will be in {"insert","delete","modify"}
+
+A["position"] would be an integer between 0 and len(sdcs).
+
+A["sdc"] would be an sdc structure. For "action":"delete" it would not be important. 
+--------------
+
+

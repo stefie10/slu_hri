@@ -1,0 +1,1090 @@
+here=File.dirname(__FILE__)
+tklib_home=File.expand_path("#{here}/../..")
+$tklib_home=tklib_home
+urv_home="#{tklib_home}/data/directions/direction_unrealville"
+d1_home="#{tklib_home}/data/directions/direction_floor_1"
+d1_objdet_home="#{tklib_home}/data/directions/direction_floor_1_objdet"
+d1_3d_home="#{tklib_home}/data/directions/direction_floor_1_3d"
+d3_home="#{tklib_home}/data/directions/direction_floor_3"
+d8_home="#{tklib_home}/data/directions/direction_floor_8"
+d8_data_home="#{tklib_home}/../data/directions/direction_floor_8"
+d8_full_home="#{tklib_home}/data/directions/direction_floor_8_full"
+medialab="#{tklib_home}/data/directions/direction_medialab_cynthia"
+stata3_aaai_home="#{tklib_home}/data/directions/stata3_aaai"
+forklift_home="#{tklib_home}/data/directions/forklift"
+matthias_home="#{tklib_home}/data/directions/direction_matthias"
+hsp_home="#{tklib_home}/data/directions/direction_hsp"
+olin_home="#{tklib_home}/data/directions/direction_olin"
+
+enlivn_home="#{tklib_home}/../enlivn"
+
+dir3 = "#{tklib_home}/pytools/direction_understanding3"
+urv_tag_file = "#{urv_home}/tags/urv.tag"
+
+Dir.chdir(tklib_home)
+
+model = ENV['MODEL']
+CARMEN_HOME="#{tklib_home}/nlp/3rdParty/carmen/carmen/"
+ENV['PYTHONPATH'] = ["#{CARMEN_HOME}/src/python",
+                     "#{tklib_home}/pytools/utilities/python",
+                     "#{tklib_home}/cutilities/python",
+                     "#{tklib_home}/pytools/vision/src",
+                     "#{tklib_home}/pytools/pylcm/src/",
+                     "#{tklib_home}/pytools/map_partitioning/src",
+                     "#{tklib_home}/pytools/cooccurrence/src",
+                     "#{tklib_home}/pytools/direction_understanding3/src",
+                     "#{tklib_home}/pytools/direction_understanding3/bin",
+                     "#{tklib_home}/pytools/spatial_features/python", 
+                     "#{tklib_home}/pytools/spatial_features/swig", 
+                     "#{tklib_home}/pytools/gsl_utilities/python", 
+                     "#{tklib_home}/pytools/gsl_utilities/swig", 
+                     "#{tklib_home}/3rdParty/Polygon-2.0.3/build/lib.linux-x86_64-2.7/",
+                    ].join(':')
+ENV['PYTHONPATH'] += ":" + `cd #{tklib_home}/nlp && rake -s pythonpath`.chomp
+ENV['LD_LIBRARY_PATH'] = [`cd #{tklib_home}/nlp && rake -s ldlibrarypath`.chomp,
+                          "#{tklib_home}/build/lib",
+                         ].join(":")
+ENV['SLIMD_HOME'] = `cd #{tklib_home}/nlp && rake -s slimdhome`.chomp
+ENV['TKLIB_HOME'] = tklib_home
+
+$pdb_python = (ENV['PDB_PYTHON'] or false)
+$debug_python = (ENV['DEBUG_PYTHON'] or false)
+$valgrind_python = (ENV['VALGRIND_PYTHON'] or false)
+$memprof_python = (ENV['MEMPROF_PYTHON'] or false)
+$efence_python = (ENV['EFENCE_PYTHON'] or false)
+
+def python(file)
+  puts ENV['PYTHONPATH'] 
+  puts "\n"
+  if ($debug_python)
+    sh "gdb --args python #{file}"
+  elsif  ($valgrind_python)
+    sh "valgrind --tool=memcheck --suppressions=#{$tklib_home}/etc/valgrind-python.supp  --suppressions=#{$tklib_home}/etc/valgrind-java.supp python -u #{file}"         
+  elsif ($memprof_python)
+    sh "memprof /usr/bin/python #{file}"
+  elsif ($pdb_python)
+    sh "pdb #{file}"
+  elsif ($efence_python)
+    sh "export LD_PRELOAD=libefence.so.0.0 && gdb --args python #{file}"
+  else
+    sh "time python #{file}"
+  end
+end
+
+
+task :python do
+  sh "python"
+end
+
+task :pythonPath do
+  puts ENV['PYTHONPATH']
+end
+
+[{'name'=>"hsp",
+   'home'=>"#{hsp_home}",
+   'map_fname'=>"#{hsp_home}/hsp.cmf",
+   'tag_fname'=>"#{hsp_home}/tags/objects.tag",
+   'partitions_fname'=>"#{hsp_home}/partitions/partitions.pck",
+   'partitions_alpha'=>'20',
+   'partitions_seed'=>'9182',
+   'skel_fname'=>"#{hsp_home}/skels/skel.pck",
+   'skel_params'=>"2 1000",
+   'lmap_fname'=>"#{hsp_home}/lmap/lmap.pck",
+   'keyword_fname'=>"#{hsp_home}/keywords/keywords.txt",},
+ {'name'=>"olin",
+   'home'=>"#{olin_home}",
+   'map_fname'=>"#{olin_home}/map.cmf",
+   'tag_fname'=>"#{olin_home}/tags/objects.tag",
+   'partitions_fname'=>"#{olin_home}/partitions/partitions.pck",
+   'partitions_alpha'=>'2',
+   'partitions_seed'=>'9182',
+   'skel_fname'=>"#{olin_home}/skels/skel.pck",
+   'skel_params'=>"2 1000",
+   'lmap_fname'=>"#{olin_home}/lmap/lmap.pck",
+   'keyword_fname'=>"#{olin_home}/keywords/keywords.txt",},
+ {'name'=>"d8",
+   'home'=>"#{d8_home}",
+   'map_fname'=>"#{d8_home}/df8_small_filled.cmf",
+   'tag_fname'=>"#{d8_home}/tags/df8_tags_small_redux.tag",
+   'partitions_fname'=>"#{d8_home}/partitions/d8_small_version2.pck",
+   'partitions_alpha'=>'2.0',
+   'partitions_seed'=>'9182',
+   'skel_fname'=>"#{d8_home}/skels/df8_small_skel.pck",
+   'skel_params'=>"2 1000",
+   'lmap_fname'=>"#{d8_home}/lmap/d8.stefie10.pck",
+   'gtruth_tag_fname'=>"#{d8_home}/regions/df8full_gtruth_regions.tag",
+   'keyword_fname'=>"#{d8_home}/keywords/d8_keywords.txt",},
+ {'name'=>"forklift",
+   'home'=>"#{forklift_home}",
+   'map_fname'=>"#{forklift_home}/forklift.cmf",
+   'tag_fname'=>"#{forklift_home}/tags/forklift_tags.tag",
+   'partitions_fname'=>"#{forklift_home}/partitions/forklift_full_part.pck",
+   'partitions_alpha'=>'10.0',
+   'partitions_seed'=>'9182',
+   'skel_fname'=>"#{forklift_home}/skels/forklift_full_skel.pck",
+   'skel_params'=>"2 1000",
+   'lmap_fname'=>"#{forklift_home}/lmap/forklift.stefie10.pck",
+   'keyword_fname'=>"#{forklift_home}/keywords/forklift_keywords.txt",},
+ {'name'=>"d8_full",
+   'home'=>"#{d8_full_home}",
+   'map_fname'=>"#{d8_full_home}/direction_floor_8_full_filled.cmf.gz",
+   'tag_fname'=>"#{d8_full_home}/tags/df8_full_tags.tag",
+   'partitions_fname'=>"#{d8_full_home}/partitions/d8_full_part.pck",
+   'partitions_alpha'=>'2.0',
+   'partitions_seed'=>'9182',
+   'skel_fname'=>"#{d8_full_home}/skels/df8_small_skel.pck",
+   'skel_params'=>"2 1000",
+   'lmap_fname'=>"#{d8_full_home}/lmap/d8.stefie10.pck",
+   'gtruth_tag_fname'=>"#{d8_full_home}/regions/df8full_gtruth_regions.tag",
+   'keyword_fname'=>"#{d8_full_home}/keywords/d8_keywords.txt",},
+ {'name'=>"d1",
+   'home'=>"#{d1_home}",
+   'map_fname'=>"#{d1_home}/direction_floor_1_small.cmf",
+   'tag_fname'=>"#{d1_home}/tags/df1_small_tags.tag",
+   'partitions_fname'=>"#{d1_home}/partitions/d1_small.pck",
+   'partitions_alpha'=>'4.0',
+   'partitions_seed'=>'100',
+   'skel_fname'=>"#{d1_home}/skels/direction_floor1_small_skel.pck",
+   'skel_params'=>"1 10000",
+   'lmap_fname'=>"#{d1_home}/lmap/d1_lmap.pck",
+   'gtruth_tag_fname'=>"#{d1_home}/regions/df1_small_groundtruth.tag",
+   'keyword_fname'=>"#{d1_home}/keywords/keywords.autogen.txt",},
+
+ {'name'=>"ml",
+   'home'=>"#{medialab}",
+   'map_fname'=>"#{medialab}/medialab_cynthia_redux.cmf.gz",
+   'tag_fname'=>"#{medialab}/tags/medialab.tag",
+   'partitions_fname'=>"#{medialab}/partitions/medialab_part.pck",
+   'partitions_alpha'=>'2.5',
+   'partitions_seed'=>'9182',
+   'skel_fname'=>"#{medialab}/skels/medialab_skel.pck",
+   'skel_params'=>"2 1000",
+   'lmap_fname'=>"#{medialab}/lmap/ml.pck",
+   'keyword_fname'=>"#{medialab}/keywords/medialab_keywords.txt",},
+ {'name'=>"d1_3d",
+   'home'=>"#{d1_3d_home}",
+   'map_fname'=>"#{d1_3d_home}/direction_floor_1_small.cmf",
+   'tag_fname'=>"#{d1_3d_home}/tags/df1_small_tags.tag",
+   'gtruth_tag_fname'=>"#{d1_3d_home}/regions/df13d_small_groundtruth.tag",
+   'partitions_fname'=>"#{d1_3d_home}/partitions/d1_small.pck",
+   'partitions_alpha'=>'4.0',
+   'partitions_seed'=>'100',
+   'skel_fname'=>"#{d1_3d_home}/skels/direction_floor1_small_skel.pck",
+   'skel_params'=>"1 1000",
+   'lmap_fname'=>"#{d1_3d_home}/lmap/d1_lmap.pck",
+   'keyword_fname'=>"#{d1_3d_home}/keywords/keywords.autogen.txt",},
+ 
+
+].each do |args|
+
+  partitions_base = File.dirname(args['partitions_fname']) + 
+    "/" + File.basename(args["partitions_fname"], ".pck")
+  skel_base = File.dirname(args['skel_fname']) + 
+    "/" + File.basename(args["skel_fname"], ".pck")
+  lmap_base = File.dirname(args['lmap_fname']) + 
+    "/" + File.basename(args["lmap_fname"], ".pck")
+
+
+  task "skeletonize_map_#{args['name']}" do
+    sh "python #{tklib_home}/pytools/voronoi/bin/skeletonize.py #{args['map_fname']} " +
+      "#{skel_base} #{args['skel_params']}"
+  end
+  
+  desc "run the map partitioner" 
+  task "partition_map_#{args['name']}" do
+    sh "python #{tklib_home}/pytools/direction_understanding3/bin/partition_map.py " +
+      "#{args['skel_fname']}  #{args['tag_fname']} 12 #{args['map_fname']} #{args['partitions_alpha']} #{args['partitions_seed']} " +
+      "#{partitions_base}"
+  end
+
+  desc "run the map partitioner" 
+  task "view_partitions_#{args['name']}" do
+    sh "python #{tklib_home}/pytools/map_partitioning/bin/show_partitioning.py " +"#{partitions_base}.pck"
+  end
+  
+
+  desc "make the flickr cache"
+  task "cache_lmap_#{args['name']}" do
+    sh "python #{tklib_home}/pytools/vision/bin/models/cache_lmap.py " +
+      "#{tklib_home}/data/flickr/flickr_cache.pck " +
+      "#{args['tag_fname']} #{args['keyword_fname']} "
+    sh "mv #{tklib_home}/prior_hash.pck #{args['lmap_fname']}"
+  end
+
+
+  desc "topo map"
+  task "plot_topological_map_#{args['name']}" => [:buildGui] do
+    python("#{dir3}/src/du/gui/topologicalMap.py #{args['home']}/models/#{model}")
+  end
+
+  task "print_landmark_entropy_#{args['name']}" do
+    python("#{dir3}/src/du/print_landmark_entropy.py #{args['home']}/models/#{model}")
+  end
+
+
+
+  desc "run compare runs #{args['name']}"
+  task "compare_runs_#{args['name']}" do 
+    sh "cd #{dir3}/bin && python compare_runs.py #{args['home']}/models/#{model} #{args['home']}/output/#{ENV['OUT1']} #{args['home']}/output/#{ENV['OUT2']}"
+end
+
+
+  desc "plot distance curves #{args['name']}"
+  task "plot_distance_curves_#{args['name']}" do
+    sh "cd pytools/direction_understanding3/eval && python plot_distance_curves.py #{args['home']}/output/#{ENV['OUT1']} " +
+      "#{args['home']}/output/#{ENV['OUT2']} #{args['home']}/output/#{ENV['OUT3']}  #{args['home']}/output/#{ENV['OUT4']} #{args['home']}/output/#{ENV['OUT5']} #{args['home']}/output/#{ENV['OUT6']}"
+end
+
+  desc "run results browser #{args['name']}"
+  task "results_browser_#{args['name']}" => [:buildGui] do
+    sh "python #{dir3}/src/du/gui/resultsBrowser/resultsBrowser.py #{args['home']}/models/#{ENV['MODEL']} " + 
+      " #{args['home']}/output/#{ENV['OUT1']}"
+end
+
+  FileList['pytools/direction_understanding3/src/du/models*/*.py'].each do |src|
+    model_name = File.basename(src, ".py")
+    desc "Create model #{model_name}, #{args['name']}"
+    task "create_model_#{model_name}_#{args['name']}" do
+      python("pytools/direction_understanding3/bin/create_model.py #{model_name} " +
+        "#{args['partitions_fname']} " + 
+        "#{args['lmap_fname']} " + 
+        "#{args['home']}/srel_mat/#{model_name}_srel.full.dat " +
+        "#{args['map_fname']} " +
+        "#{args['tag_fname']} " +
+        "#{args['home']}/models/#{model_name}.pck")
+    end
+
+    desc "srel mat #{model_name} #{args['name']}"
+    task "create_srel_mat_#{model_name}_#{args['name']}" do
+      python("pytools/direction_understanding3/bin/srel_mat_create.py" +
+             " #{args['home']}/models/#{model_name}.pck")
+    end
+
+
+    desc "Gui browser"
+    task "run_model_browser_#{args['name']}" => [:buildGui] do
+      python("#{dir3}/src/du/gui/modelBrowser.py " +
+             "#{args['home']}/models/#{model} " + 
+             "'#{tklib_home}/nlp/data/Direction understanding subjects Floor 8 (Final).ods' ")
+    end
+
+    desc "Gui browser"
+    task "run_lcm_qt_#{args['name']}" => [:buildGui] do
+      python("#{dir3}/src/du/gui/lcm/lcm_qt.py " +
+             "#{args['home']}/models/#{model} " + 
+             "#{args['tag_fname']} " +
+             "#{args['map_fname']} " + 
+             "")
+    end
+
+
+    desc "xml rpc browser"
+    task "run_xml_rpc_#{args['name']}" => [:buildGui] do
+      python("#{dir3}/src/du/gui/xmlRpcServer.py " +
+             "#{args['home']}/models/#{model} ")
+    end
+
+
+
+
+  end
+
+  [{'name'=>'d8',
+     'fname'=>"#{tklib_home}/nlp/data/Direction understanding subjects Floor 8 (Final).ods",
+     'woz_prefix'=>"stefie10",
+     'extended_annotation_fname' => "#{tklib_home}/data/directions/" + 
+     "direction_training/annotation/d8_full_all_path_annotations.pck"
+   },
+   {'name'=>'d1',
+     'fname'=>"#{tklib_home}/nlp/data/Direction understanding subjects Floor 1 (Final).ods",
+     'woz_prefix'=>"stefie10",
+   },
+   {'name'=>'d1_3d',
+     'fname'=>"#{tklib_home}/nlp/data/Direction understanding subjects Floor 1 (Helicopter).ods",
+     'woz_prefix'=>"stefie10", 
+   },
+   
+  ].each do |corpus|
+    task "export_#{args['name']}_corpus_#{corpus['name']}" do
+      python("#{dir3}/src/du/export_corpus.py " + 
+             "'#{args['map_fname']}' " +
+             "'#{args['tag_fname']}' " +
+             "'#{args['gtruth_tag_fname']}' " +
+             "'#{corpus['extended_annotation_fname']}' " + 
+             "'#{dir3}/#{args['name']}_#{corpus['name']}.xml'")
+    end
+
+    desc "evaluate on corpus #{args['name']}"
+    task "evaluate_specialized_#{args['name']}_corpus_#{corpus['name']}" => [:buildGui] do
+      python("#{dir3}/bin/evaluate_model.py " + 
+             "'#{corpus['fname']}' " + 
+             "#{args['home']}/models/#{model} " + 
+             "#{args['gtruth_tag_fname']}  #{args['map_fname']} #{args['home']}/output --num_to_run=#{ENV['NUM_TO_RUN']}  " +
+             "--no_spatial_relations " + 
+             "--evaluation_mode=specialized ")
+    end
+
+    desc "evaluate on corpus #{args['name']}"
+    task "evaluate_specialized_woz_#{args['name']}_corpus_#{corpus['name']}" => [:buildGui] do
+      python("#{dir3}/bin/evaluate_model.py " + 
+             "'#{corpus['fname']}' " + 
+             "#{args['home']}/models/#{model} " + 
+             "#{args['gtruth_tag_fname']}  #{args['map_fname']} #{args['home']}/output --num_to_run=#{ENV['NUM_TO_RUN']}  " +
+             "--no_spatial_relations " + 
+             "--wizard_of_oz_sdcs=#{corpus['woz_prefix']} " + 
+             "--evaluation_mode=specialized ")
+    end
+
+
+
+    desc "evaluate on corpus #{args['name']}"
+    task "evaluate_specialized_explore_#{args['name']}_corpus_#{corpus['name']}" => [:buildGui] do
+      python("#{dir3}/bin/evaluate_model.py " + 
+             "'#{corpus['fname']}' " + 
+             "#{args['home']}/models/#{model} " + 
+             "#{args['gtruth_tag_fname']}  #{args['map_fname']} #{args['home']}/output --num_to_run=#{ENV['NUM_TO_RUN']}  " +
+             "--no_spatial_relations " + 
+             "--do_exploration " + 
+             "--evaluation_mode=specialized ")
+    end
+
+    desc "evaluate on corpus #{args['name']}"
+    task "evaluate_specialized_greedy_#{args['name']}_corpus_#{corpus['name']}" => [:buildGui] do
+      python("#{dir3}/bin/evaluate_model.py " + 
+             "'#{corpus['fname']}' " + 
+             "#{args['home']}/models/#{model} " + 
+             "#{args['gtruth_tag_fname']}  " + 
+             "#{args['map_fname']} " + 
+             "#{args['home']}/output --num_to_run=#{ENV['NUM_TO_RUN']} " + 
+             "--evaluation_mode=specialized " + 
+             "--inference greedy")
+    end
+
+  end
+
+
+
+  desc "Print out the corpus ground truth, for reference."
+    task "print_corpus_helicopter_#{args['name']}" do
+    python("#{dir3}/bin/print_corpus.py " + 
+           "'#{tklib_home}/nlp/data/Direction understanding subjects Floor 1 (Helicopter).ods' " + 
+           "#{args['home']}/models/#{model} " + 
+           "#{args['gtruth_tag_fname']} " + 
+           "#{args['map_fname']}")
+  end
+
+
+  desc "annote image"
+  task "annotate_image_qt_#{args['name']}" => [:buildGui] do
+    python("#{dir3}/src/du/tagFileGui/annotator.py " +
+      "#{args['map_fname']} #{args['tag_fname']}")
+  end
+
+  desc "annote image"
+  task "annotate_image_tk_#{args['name']}" => [:buildGui] do
+    sh "python #{tklib_home}/pytools/planning2.0/bin/annote_image.py " +
+       "#{args['map_fname']} #{args['tag_fname']}"
+  end
+
+  desc "run results browser for #{args['name']}"
+  task "results_browser_#{args['name']}" => [:buildGui] do
+    python("#{dir3}/src/du/gui/resultsBrowser/resultsBrowser.py " +
+           "#{args['home']}/models/#{model} " + 
+           "#{args['home']}/output/#{ENV['OUT1']}")
+  end
+
+
+
+
+
+end
+
+desc "xml rpc client"
+task "run_xml_rpc_client" do
+  python("#{dir3}/src/du/gui/xmlRpcClient.py ")
+end
+
+#####################################################################
+#  Run Unreal code
+#####################################################################
+desc "extract tags from a ut t3d file"
+task :runExtractUrvTags do
+  sh "python utilities/extract_ut_tags.py #{urv_home}/unrealville-mod.t3d " +
+    "#{urv_home}/tags/urv.automatic.tag"
+end
+
+desc "annote image"
+task :runAnnotateImageUrv do
+  sh "python #{tklib_home}/pytools/planning2.0/bin/visualizer.py " +
+    "#{urv_home}/unrealville2.cmf #{urv_home}/tags/urv.annotated.tag"
+  #sh "cd pytools/planning2.0/bin && python annote_image.py " +
+  #  "#{urv_home}/unrealville2.cmf #{urv_home}/tags/urv.annotated.tag"
+end
+
+desc "annote image"
+task :runAnnotateImageD8 do
+  sh "python #{tklib_home}/pytools/planning2.0/bin/visualizer.py " +
+    "#{d8_home}/df8_small_filled.cmf #{d8_home}/tags/df8_tags_small_redux.tag"
+end
+
+desc "annote image"
+task :runAnnotateImageD8_full do
+  sh "python #{tklib_home}/pytools/planning2.0/bin/visualizer.py " +
+    "#{d8_full_home}/direction_floor_8_full_filled.cmf.gz "  +
+    "#{d8_full_home}/tags/df8_full_tags.tag "
+end
+
+desc "annote image"
+task :runAnnotateImageForklift_full do
+  sh "python #{tklib_home}/pytools/planning2.0/bin/visualizer.py " +
+    "#{forklift_home}/forklift.cmf "  +
+    "#{forklift_home}/tags/forklift_tags.tag "
+end
+
+desc "annote image"
+task :runAnnotateImage do
+  sh "python #{tklib_home}/pytools/planning2.0/bin/annote_image.py "
+end
+
+desc "annote image"
+task :runAnnotateImageD1 do
+  sh "python #{tklib_home}/pytools/planning2.0/bin/visualizer.py " +
+    "#{d1_home}/direction_floor_1.cmf #{d1_home}/tags/df1_tags.tag"
+end
+
+desc "annote image"
+task :viewAnnotationsUrv do
+  sh "cd pytools/planning2.0/bin && python annote_image.py " +
+    "#{urv_home}/unrealville2.cmf #{urv_home}/tags/urv.tag"
+end
+
+file "#{urv_tag_file}" => ["#{urv_home}/tags/urv.annotated.tag",
+                           "#{urv_home}/tags/urv.automatic.tag"] do |t|
+  sh "cat #{t.prerequisites} > #{t.name}"
+end
+
+
+desc "run the map partitioner for unrealville" 
+task :runPartitionMapUrv => [urv_tag_file] do
+  sh "python #{tklib_home}/pytools/direction_understanding3/bin/partition_map.py " +
+    "#{urv_home}/skels/unrealville2_skel.pck #{urv_tag_file} 15.0 " +
+    "#{urv_home}/unrealville2.cmf #{urv_home}/partitions/urv_small"
+end
+
+desc "everything needed to run after updating urv tags"
+task :updateUrvTags => 
+  [:runExtractUrvTags, :runCacheLmapUrv, :create_naive_bayes_urv, :create_min_entropy_srel_mat_urv]
+
+
+desc "skeletonize the unrealville map"
+task :runSkeletonizeMapUrv do
+  # already pretty small, so didn't do this. 
+  #sh "python cutilities/bin/downsize_map.py #{urv_home}/unrealville2.cmf #{urv_home}/unrealville2_small.cmf 2"
+  sh "python #{tklib_home}/pytools/voronoi/bin/skeletonize.py #{urv_home}/unrealville2.cmf " +
+    "#{urv_home}/skels/unrealville2_skel 1 100"
+end
+
+desc "make the flickr cache for urv"
+task :runCacheLmapUrv do
+  sh "python #{tklib_home}/pytools/vision/bin/models/cache_lmap.py " +
+    "#{tklib_home}/data/flickr/flickr_cache.pck " +
+    "#{urv_tag_file} #{urv_home}/keywords/keywords.txt"
+  sh "mv #{tklib_home}/prior_hash.pck #{urv_home}/lmap/urv.pck"
+end
+
+
+
+
+
+#####################################################################
+#  Run Visualizations
+#####################################################################
+
+desc "Gui browser to check out the D8 matrix"
+task :runModelBrowserD8 => [:buildGui] do
+  python("#{dir3}/src/du/gui/modelBrowser.py " +
+         "#{tklib_home}/data/directions/direction_floor_8/models/#{model} " + 
+         "'#{tklib_home}/nlp/data/Direction understanding subjects Floor 8 (Final).ods' ")
+end
+
+desc "Gui browser to check out the D8_full matrix"
+task :runModelBrowserD8_full => [:buildGui] do
+  python("#{dir3}/src/du/gui/modelBrowser.py " +
+         "#{tklib_home}/data/directions/direction_floor_8_full/models/#{model} " + 
+         "'#{tklib_home}/nlp/data/Direction understanding subjects Floor 8 (Final).ods' ")
+end
+
+desc "Gui browser to check out the D1 matrix"
+task :runModelBrowserD1 => [:buildGui] do
+  python("#{dir3}/src/du/gui/modelBrowser.py " +
+         "#{tklib_home}/data/directions/direction_floor_1/models/#{model} " + 
+         "'#{tklib_home}/nlp/data/Direction understanding subjects Floor 1 (Final).ods' ")
+end
+
+
+
+desc "Gui browser to check out the Forklift matrix"
+task :runModelBrowserForklift_full => [:buildGui] do
+  python("#{dir3}/src/du/gui/modelBrowser.py " +
+         "#{forklift_home}/models/#{model} " + 
+         "'#{tklib_home}/nlp/data/Direction understanding subjects Floor 8 (Final).ods' ")
+end
+
+
+desc "Gui browser to check out the Unrealville matrix"
+task :runModelBrowserUrv => [:buildGui] do
+  sh "python #{dir3}/src/du/gui/modelBrowser.py " +
+    "#{urv_home}/models/#{model}"
+end
+
+
+desc "LCM interface testing"
+task :runLCMNetworkingForklift do
+ python("#{dir3}/src/du/gui/lcm_forklift/lcm_networking_forklift.py " +
+       "#{forklift_home}/models/min_entropy_extended.pck " +
+       "#{forklift_home}/Belvoir_RNDF.txt " +
+       "--inference_type=#{ENV['INFERENCE']} --num_explorations=#{ENV['EXPLORATIONS']} --exploration_heuristics_name=#{ENV['HEURISTICS']} --parameters=#{ENV['PARAM']}")
+end
+
+
+# build python files from qt .ui files. 
+FileList["#{dir3}/src/du/**/*.ui", "#{dir3}/vis/*.ui"].each do |src|
+  target = File.join(File.dirname(src),
+                     File.basename(src, ".ui") + '_ui.py')
+  file  target => [src] do |t|
+    sh "pyuic4 #{t.prerequisites} -o #{t.name}\n"
+
+  end
+  task :buildGui => [target]
+end
+
+#####################################################################
+#  Run Tests 
+#####################################################################
+desc "test cases"
+task :tests do
+  sh "python /usr/bin/nosetests #{dir3}/src/du/*"
+end
+
+#desc "test memory leaks"
+#task :test_memory_leaks do
+#  sh "python #{tklib_home}/pytools/direction_understanding3/test/test_cmath2d.py"
+#end
+
+desc "test model"
+task :test_model do
+  sh "cd #{tklib_home}/pytools/direction_understanding3/test/ && python test_model.py"
+end
+
+desc "test lcm"
+task :test_lcm do
+  sh "cd #{tklib_home}/pytools/direction_understanding3/test/ && python test_lcm.py"
+end
+
+desc "test tmat"
+task :test_tmat do
+  sh "cd #{tklib_home}/pytools/direction_understanding3/test/ && python test_get_tmat.py"
+end
+
+desc "test Load Logfile"
+task :test_load_logfile_d8 do
+  sh "cd #{tklib_home}/pytools/direction_understanding3/test/ && python load_logfile.py #{d8_data_home}/direction_floor_8_scanmatch_offset.log #{d8_data_home}/images"
+end
+
+
+desc "print names in a model."
+task :runPrintKeywords do
+  sh "python #{tklib_home}/pytools/direction_understanding3/bin/print_keywords.py #{tklib_home}/data/directions/direction_floor_8/model5/d8_dg_m5.pck keywords.txt"
+end
+
+desc "Run the shortest path test."
+task :runShortestPath do
+  sh "cd cutilities/test/ && python skel_shortest_path.py #{tklib_home}/data/directions/direction_floor_8/skels/df8_small_skel.pck #{tklib_home}/data/directions/direction_floor_8/df8_small_filled.cmf"
+end
+
+desc "test topological map"
+task :runTestTransitionMatrixM6 do
+  sh "cd pytools/direction_understanding3/test/ && python test_transition_matrix.py #{tklib_home}/data/directions/direction_floor_8/model6/d8_dg_m6.pck #{tklib_home}/data/directions/direction_floor_8/df8_small_filled.cmf.gz "
+end
+
+desc "Print out the corpus ground truth, for reference."
+task :runPrintCorpusD8 do
+sh "cd pytools/direction_understanding3/bin && python print_corpus.py '#{tklib_home}/nlp/data/Direction understanding subjects Floor 8 (Final).ods' #{tklib_home}/data/directions/direction_floor_8/models/#{model}  #{tklib_home}/data/directions/direction_floor_8/regions/df8_small_filled_regions_gtruth.tag #{tklib_home}/data/directions/direction_floor_8/df8_small_filled.cmf.gz"
+end
+
+desc "Print out the corpus ground truth, for reference."
+task :runPrintCorpusD1 do
+sh "cd pytools/direction_understanding3/bin && python print_corpus.py '#{tklib_home}/nlp/data/Direction understanding subjects Floor 1 (Final).ods' #{tklib_home}/data/directions/direction_floor_1/models/#{model}  #{tklib_home}/data/directions/direction_floor_1/regions/df1_small_groundtruth.tag #{tklib_home}/data/directions/direction_floor_1/direction_floor_1_small.cmf"
+end
+
+
+
+desc "print out tags and coordinates in both coordinate systems"
+task :runPrintTagsD8 do
+  sh "cd pytools/direction_understanding3/bin && python print_landmark_coordinates.py #{tklib_home}/data/directions/direction_floor_8/models/#{model}"
+end
+
+desc "run the thing that prints out starting viewpoints"
+task :runPrintStartingViewpointsD8 do
+  sh "python pytools/direction_understanding3/bin/print_starting_viewpoints.py #{tklib_home}/data/directions/direction_floor_8/model13/d8_du_dg_m13.pck '#{tklib_home}/nlp/data/Direction understanding subjects Floor 8 (Final).ods' #{tklib_home}/data/directions/direction_floor_8/regions/df8_small_filled_regions_gtruth.tag #{tklib_home}/data/directions/direction_floor_8/df8_small_filled.cmf.gz"
+end
+
+task :runTestEvaluateD8 => [:buildGui] do
+  sh "cd pytools/direction_understanding3/vis && python evaluate_model.py #{d8_home}/models/#{model} #{d8_home}/regions/df8_small_filled_regions_gtruth.tag #{d8_home}/df8_small_filled.cmf.gz"
+end
+
+task :runTestShowD8 do
+  sh "cd pytools/direction_understanding3/vis && python show_path.py #{d8_data_home}/direction_floor_8_scanmatch_offset.log #{d8_data_home}/images #{d8_home}/models/#{model} #{d8_home}/regions/df8_small_filled_regions_gtruth.tag #{d8_home}/df8_small_filled.cmf.gz"
+end
+
+desc "exploration browser"
+task :runExplorationBrowserD8 => [:buildGui] do
+  sh "cd pytools/direction_understanding3/vis && python explorationBrowser.py #{d8_data_home}/direction_floor_8_scanmatch_offset.log #{d8_data_home}/images #{d8_home}/models/#{model} #{d8_home}/regions/df8_small_filled_regions_gtruth.tag #{d8_home}/df8_small_filled.cmf.gz"
+end
+
+
+
+#####################################################################
+#  Run Core code
+#####################################################################
+
+desc "Create keywords from the direction file and the Flickr Cache."
+task :create_keyword_file_d8 do
+  sh "python #{tklib_home}/pytools/direction_understanding3/bin/extract_keywords.py " + 
+      "#{tklib_home}/data/flickr/flickr_cache.pck " + 
+      "'#{tklib_home}/nlp/data/Direction understanding subjects Floor 8 (Final).ods' " + 
+      "#{tklib_home}/data/directions/direction_floor_8/tags/df8_tags_small_redux.stefie10.extended.tag " +
+      "#{tklib_home}/data/directions/direction_floor_8/keywords/keywords.autogen.txt"
+end
+
+desc "Create keywords from the direction file and the Flickr Cache."
+task :create_keyword_file_d1 do
+  sh "python #{tklib_home}/pytools/direction_understanding3/bin/extract_keywords.py " + 
+      "#{tklib_home}/data/flickr/flickr_cache.pck " + 
+      "'#{tklib_home}/nlp/data/Direction understanding subjects Floor 1 (Final).ods' " + 
+      "#{d1_home}/tags/df1_tags.tag " +
+      "#{d1_home}/keywords/keywords.autogen.txt"
+end
+
+
+desc "Manually create observations."
+task :create_tag_file do
+  sh "echo $PYTHONPATH"
+  sh "python #{tklib_home}/pytools/planning2.0/bin/visualizer.py"
+end
+
+desc "Manually create observations."
+task :view_tag_file do
+  sh "echo $PYTHONPATH"
+  sh "python #{tklib_home}/pytools/planning2.0/bin/annote_image.py"
+end
+
+desc "skeletonize the matthias map"
+task :skeletonize_map_matthias do
+  sh "python cutilities/bin/downsize_map.py #{matthias_home}/maps/matthias_map_closed.cmf.gz #{matthias_home}/maps/matthias_map_closed_small.cmf.gz 2"
+  sh "python cutilities/bin/copy_tagfile.py #{matthias_home}/maps/matthias_map_closed.cmf.gz #{matthias_home}/tags/direction_matthias.tag  #{matthias_home}/maps/matthias_map_closed_small.cmf.gz #{matthias_home}/tags/direction_matthias_small.tag"
+  sh "python #{tklib_home}/pytools/voronoi/bin/skeletonize.py #{matthias_home}/maps/matthias_map_closed_small.cmf.gz " +
+    "#{matthias_home}/skels/matthias_skel 0 1000"
+end
+
+
+desc "skeletonize the D8 full map"
+task :skeletonize_map_d8_full do
+  #sh "python cutilities/bin/downsize_map.py #{d8_full_home}/direction_floor_8_full_filled.cmf.gz #{d8_full_home}/direction_floor_8_small_full_filled.cmf 1"
+  #sh "python cutilities/bin/copy_tagfile.py #{d8_full_home}/direction_floor_3_full_filled.cmf.gz #{d8_full_home}/tags/df3_tags.tag  #{d8_full_home}/direction_floor_3_small_full_filled.cmf #{d8_full_home}/tags/df3_small_tags.tag"
+  sh "python #{tklib_home}/pytools/voronoi/bin/skeletonize.py #{d8_full_home}/direction_floor_8_full_filled.cmf.gz " +
+    "#{d8_full_home}/skels/direction_floor_8_full_skel 0 1000"
+end
+
+desc "skeletonize the forklift full map"
+task :skeletonize_map_Forklift_full do
+  #sh "python cutilities/bin/downsize_map.py #{forklift_home}/forklift.cmf #{forklift_home}/forklift_down.cmf 1"
+  #sh "python cutilities/bin/copy_tagfile.py #{forklift_home}/forklift.cmf #{forklift_home}/tags/forklift_tags.tag  #{forklift_home}/forklift_down.cmf #{forklift_home}/tags/forklift_tags.tag"
+  sh "python #{tklib_home}/pytools/voronoi/bin/skeletonize.py #{forklift_home}/forklift.cmf " +
+    "#{forklift_home}/skels/forklift_full_skel 0 1000"
+end
+
+desc "skeletonize the D3 map"
+task :skeletonize_map_d3 do
+  sh "python cutilities/bin/downsize_map.py #{d3_home}/direction_floor_3_filled2.cmf.gz #{d3_home}/direction_floor_3_small_filled.cmf 2"
+  sh "python cutilities/bin/copy_tagfile.py #{d3_home}/direction_floor_3_filled2.cmf.gz #{d3_home}/tags/df3_tags.tag  #{d3_home}/direction_floor_3_small_filled.cmf #{d3_home}/tags/df3_small_tags.tag"
+  sh "python #{tklib_home}/pytools/voronoi/bin/skeletonize.py #{d3_home}/direction_floor_3_small_filled.cmf " +
+    "#{d3_home}/skels/direction_floor_3_skel 1 1000"
+end
+
+
+desc "skeletonize the D1 map"
+task :runSkeletonizeMapD1 do
+  # already pretty small, so didn't do this. 
+  sh "python cutilities/bin/downsize_map.py #{d1_home}/direction_floor_1.cmf.gz #{d1_home}/direction_floor_1_small.cmf 3"
+  sh "python cutilities/bin/copy_tagfile.py #{d1_home}/direction_floor_1.cmf.gz #{d1_home}/tags/df1_tags.tag  #{d1_home}/direction_floor_1_small.cmf #{d1_home}/tags/df1_small_tags.tag"
+  sh "python #{tklib_home}/pytools/voronoi/bin/skeletonize.py #{d1_home}/direction_floor_1_small.cmf " +
+    "#{d1_home}/skels/direction_floor1_small_skel 1 10000"
+end
+
+
+desc "skeletonize the D1 object detection map"
+task :skeletonize_map_d1_objdet do
+  sh "python #{tklib_home}/pytools/voronoi/bin/skeletonize.py #{d1_objdet_home}/stata_floor_1.map.gz " +
+    "#{d1_objdet_home}/skels/direction_floor_1_full_skel 1 1000"
+end
+
+desc "skeletonize the D1 object detection map"
+task :skeletonize_map_d1_objdet_downsize do
+  sh "python cutilities/bin/downsize_map.py #{d1_objdet_home}/stata_floor_1.map.gz #{d1_objdet_home}/stata_floor_1_small.cmf 3"
+  sh "python cutilities/bin/copy_tagfile.py #{d1_objdet_home}/stata_floor_1.map.gz #{d1_objdet_home}/tags/tags-objdet.tag  #{d1_objdet_home}/stata_floor_1_small.cmf #{d1_objdet_home}/tags/tags-objdet_small.tag"
+  sh "python #{tklib_home}/pytools/voronoi/bin/skeletonize.py #{d1_objdet_home}/stata_floor_1_small.cmf " +
+    "#{d1_objdet_home}/skels/stata_floor1_small_skel 1 10000"
+end
+
+
+desc "downsample tagfile "
+task :runDownsampleGroundtruthD1 do
+  sh "python cutilities/bin/copy_tagfile.py #{d1_home}/direction_floor_1.cmf.gz #{d1_home}/regions/df1_groundtruth.tag  #{d1_home}/direction_floor_1_small.cmf #{d1_home}/regions/df1_small_groundtruth.tag"
+end
+
+desc "downsample tagfile "
+task :runDownsampleD1 do
+  sh "python cutilities/bin/copy_tagfile.py #{d1_home}/direction_floor_1.cmf.gz #{d1_home}/tags/df1_tags.tag  #{d1_home}/direction_floor_1_small.cmf #{d1_home}/tags/df1_small_tags.tag"
+end
+
+
+
+
+
+desc "run the map partitioner" 
+task :runPartitionMapD1 do
+  sh "python #{tklib_home}/pytools/direction_understanding2/bin/partition_map.py #{d1_home}/skels/direction_floor1_small_skel.pck #{d1_home}/tags/df1_small_tags.tag 12 #{d1_home}/direction_floor_1_small.cmf 4.0 100 #{d1_home}/partitions/d1_small"
+end
+
+
+desc "run the map partitioner" 
+task :runPartitionMapMatthias do
+  sh "python #{tklib_home}/pytools/direction_understanding2/bin/partition_map.py #{matthias_home}/skels/matthias_skel.pck #{matthias_home}/tags/direction_matthias_small.tag 12 #{matthias_home}/maps/matthias_map_closed_small.cmf.gz 2.0 9182 #{matthias_home}/partitions/direction_matthias"
+end
+
+
+desc "run the map partitioner" 
+task :runPartitionMapD1_objdet do
+  sh "python #{tklib_home}/pytools/direction_understanding2/bin/partition_map.py #{d1_objdet_home}/skels/stata_floor1_small_skel.pck #{d1_objdet_home}/tags/tags-objdet_small.tag 12 #{d1_objdet_home}/stata_floor_1_small.cmf 4.0 100 #{d1_objdet_home}/partitions/d1_small"
+end
+
+desc "Partition view"
+task :runPartitionViewD1_objdet do
+  sh "cd pytools/direction_understanding3/bin/ && python partition_view.py #{d1_objdet_home}/partitions/d1_small.pck #{d1_objdet_home}/stata_floor_1_small.cmf"
+end
+
+
+desc "Partition view matthias"
+task :runPartitionView_matthias do
+  sh "cd pytools/direction_understanding3/bin/ && python partition_view.py #{matthias_home}/partitions/direction_matthias.pck #{matthias_home}/maps/matthias_map_closed_small.cmf.gz"
+end
+
+
+desc "run the map partitioner" 
+task :runPartitionMapD3 do
+  sh "python #{tklib_home}/pytools/direction_understanding3/bin/partition_map.py #{d3_home}/skels/direction_floor_3_skel.pck #{d3_home}/tags/df3_tags.tag 12 #{d3_home}/direction_floor_3_small_filled.cmf 1.0 98321 #{d3_home}/partitions/d3"
+end
+
+desc "run the map partitioner" 
+task :runPartitionMapD8Full do
+  sh "python #{tklib_home}/pytools/direction_understanding3/bin/partition_map.py #{d8_full_home}/skels/direction_floor_8_full_skel.pck #{d8_full_home}/tags/df8_full_tags.tag 15 #{d8_full_home}/direction_floor_8_full_filled.cmf.gz 3.0 103 #{d8_full_home}/partitions/d8_full_part"
+end
+
+desc "run the map partitioner" 
+task :runPartitionForklift_full do
+  sh "python #{tklib_home}/pytools/direction_understanding3/bin/partition_map.py #{forklift_home}/skels/forklift_full_skel.pck #{forklift_home}/tags/forklift_tags.tag 15 #{forklift_home}/forklift.cmf #{forklift_home}/partitions/forklift_full_part"
+end
+
+desc "Cache the results from flickr."
+task :runCacheLmapD8 do
+  sh "python #{tklib_home}/pytools/vision/bin/models/cache_lmap.py " +
+    "#{tklib_home}/data/flickr/flickr_cache.pck " + 
+    "#{d8_home}/tags/df8_tags_small_redux.tag " +
+    "#{d8_home}/keywords/d8_keywords.txt "
+  sh "mv #{tklib_home}/prior_hash.pck #{tklib_home}/data/directions/direction_floor_8/lmap/d8.stefie10.pck"
+end
+
+desc "Cache the results from flickr."
+task :runCacheLmapD8_full do
+  sh "python #{tklib_home}/pytools/vision/bin/models/cache_lmap.py " +
+    "#{tklib_home}/data/flickr/flickr_cache.pck " + 
+    "#{d8_full_home}/tags/df8_full_tags.tag " +
+    "#{d8_full_home}/keywords/d8_keywords.txt "
+  sh "mv #{tklib_home}/prior_hash.pck #{d8_full_home}/lmap/d8.stefie10.pck"
+end
+
+desc "Cache the results from flickr."
+task :runCacheLmapForklift_full do
+  sh "python #{tklib_home}/pytools/vision/bin/models/cache_lmap.py " +
+    "#{tklib_home}/data/flickr/flickr_cache.pck " + 
+    "#{forklift_home}/tags/forklift_tags.tag " +
+    "#{forklift_home}/keywords/forklift_keywords.txt "
+  sh "mv #{tklib_home}/prior_hash.pck #{forklift_home}/lmap/forklift.stefie10.pck"
+end
+
+desc "Cache the results from esp."
+task :runCacheLmapD8_esp do
+  sh "python #{tklib_home}/pytools/vision/bin/models/cache_lmap.py " +
+    "#{tklib_home}/data/flickr/esp_cache.pck " + 
+    "#{d8_home}/tags/df8_tags_small_redux.tag " +
+    "#{d8_home}/keywords/d8_keywords.txt "
+  sh "mv #{tklib_home}/prior_hash.pck #{tklib_home}/data/directions/direction_floor_8/lmap/d8.stefie10.esp.pck"
+end
+
+
+desc "Cache the results from flickr."
+task :runCacheLmapD3 do
+  sh "python #{tklib_home}/pytools/vision/bin/models/cache_lmap.py " +
+    "#{tklib_home}/data/flickr/flickr_cache.pck " + 
+    "#{d3_home}/tags/df3_small_tags.tag " +
+    "#{d3_home}/keywords/keywords.autogen.D1.txt"
+  sh "mv #{tklib_home}/prior_hash.pck #{d3_home}/lmap/d3_lmap.pck"
+end
+
+desc "Cache the results from flickr."
+task :runCacheLmapD1 do
+  sh "python #{tklib_home}/pytools/vision/bin/models/cache_lmap.py " +
+    "#{tklib_home}/data/flickr/flickr_cache.pck " + 
+    "#{d1_home}/tags/df1_tags.tag " +
+    "#{d1_home}/keywords/keywords.autogen.txt "
+  sh "mv #{tklib_home}/prior_hash.pck #{d1_home}/lmap/d1_lmap.pck"
+end
+
+desc "Cache the results from flickr."
+task :runCacheLmapD1_objdet do
+  sh "python #{tklib_home}/pytools/vision/bin/models/cache_lmap.py " +
+    "#{tklib_home}/data/flickr/flickr_cache.pck " + 
+    "#{d1_objdet_home}/tags/tags-objdet_small.tag " +
+    "#{d1_objdet_home}/keywords/keywords.autogen.txt "
+  sh "mv #{tklib_home}/prior_hash.pck #{d1_objdet_home}/lmap/d1_lmap.pck"
+end
+
+
+
+#####################################################################
+#  Run Evaluation code
+#####################################################################
+
+
+desc "helicopter d1"
+task :runModelEvaluateHelicopterD1 => [:buildGui] do
+  sh "cd pytools/direction_understanding3/bin && python evaluate_model.py '#{tklib_home}/nlp/data/Direction understanding subjects Floor 1 (Helicopter).ods' #{d1_3d_home}/models/#{model} #{d1_3d_home}/regions/df13d_small_groundtruth.tag #{d1_3d_home}/direction_floor_1_small.cmf #{d1_3d_home}/output --num_to_run=#{ENV['NUM_TO_RUN']} --evaluation_mode=specialized "
+end
+
+
+
+
+
+task :runModelEvaluateExploreD1 => [:buildGui] do
+  sh "cd pytools/direction_understanding3/bin && python evaluate_model.py '#{tklib_home}/nlp/data/Direction understanding subjects Floor 1 (Final).ods' #{d1_home}/models/#{model} #{d1_home}/regions/df1_small_groundtruth.tag #{d1_home}/direction_floor_1_small.cmf --num_to_run=#{ENV['NUM_TO_RUN']} --evaluation_mode=specialized --quadrant_number=1 --do_exploration"
+end
+
+
+desc "gui browser to check out the matrix"
+task :runModelEvaluateExploreD8 => [:buildGui] do
+  sh "cd pytools/direction_understanding3/bin && python evaluate_model.py '#{tklib_home}/nlp/data/Direction understanding subjects Floor 8 (Final).ods' #{d8_home}/models/#{model} #{d8_home}/regions/df8_small_filled_regions_gtruth.tag #{d8_home}/df8_small_filled.cmf.gz --num_to_run=#{ENV['NUM_TO_RUN']} --evaluation_mode=specialized --do_exploration "
+end
+
+desc "gui browser to check out the matrix"
+task :runModelEvaluateExploreD8_full => [:buildGui] do
+  sh "cd pytools/direction_understanding3/bin && python evaluate_model.py '#{tklib_home}/nlp/data/Direction understanding subjects Floor 8 (Final).ods' #{d8_full_home}/models/#{model} #{d8_full_home}/regions/df8full_gtruth_regions.tag #{d8_full_home}/direction_floor_8_full_filled.cmf.gz #{d8_full_home}/output/explore --num_to_run=#{ENV['NUM_TO_RUN']} --evaluation_mode=specialized --do_exploration --num_explorations=#{ENV['EXPLORATIONS']} --exploration_heuristics_name=#{ENV['HEURISTICS']} --parameters=#{ENV['PARAM']}"
+end
+
+desc "gui browser to check out the matrix"
+task :runModelEvaluateExploreNoSpatialD8 => [:buildGui] do
+  sh "cd pytools/direction_understanding3/bin && python evaluate_model.py '#{tklib_home}/nlp/data/Direction understanding subjects Floor 8 (Final).ods' #{d8_home}/models/#{model} #{d8_home}/regions/df8_small_filled_regions_gtruth.tag #{d8_home}/df8_small_filled.cmf.gz --num_to_run=#{ENV['NUM_TO_RUN']} --no_spatial_relations --evaluation_mode=specialized --do_exploration"
+end
+
+
+
+desc "plot hri curves"
+task :runPlotSpatialRelationScatter do
+  sh "python #{dir3}/eval/plot_sr_scatter.py #{tklib_home}/data/directions/direction_floor_8/models/#{model} #{d8_home}/output/#{ENV['OUT1']}"
+end
+
+
+desc "plot iros curves"
+task :runPlotIros do
+  python("#{dir3}/eval/plot_iros_results.py")
+end
+
+
+desc "plot hri result curves"
+task :runPlotHriPresentationCurves do
+  python("#{dir3}/eval/plot_hri_presentation_results.py")
+end
+
+#####################################################################
+#  Run Info code
+#####################################################################
+desc "list the models"
+task :list_models do
+  sh "python pytools/direction_understanding3/bin/print_models.py"
+end
+
+
+desc "run regression emailer"
+task :regression_email do
+  sh "python pytools/direction_understanding3/src/du/regression_runner.py"
+end
+
+desc "compile cutilities"
+task :build_cutilities do
+  sh "rake build_cutilities"
+end
+
+desc "compile slimd cutilities"
+task :build_slimd_cutilities do
+  sh "cd nlp/c_src && make"
+end
+
+
+
+desc "hri_global"
+task :hri_global => [:build_cutilities, :create_hri2010_global_d8] do
+  sh "cd #{dir3} && rake runModelEvaluate MODEL=hri2010_global.pck"
+end
+
+
+
+desc "min_entropy"
+task :min_entropy => [:build_cutilities, :create_min_entropy_d8] do
+  sh "cd #{dir3} && rake runModelEvaluate MODEL=min_entropy.pck"
+end
+
+
+desc "describe the ut player's motion"
+task :runUtGenerate => [:buildGui] do
+  python("#{dir3}/src/du/grunt/ut_generate.py #{urv_home}/models/min_entropy.pck")
+end
+
+
+desc "find the subject that improves the most between two runs"
+task :runFindBestSubject do
+  python("#{dir3}/bin/find_best_subject.py " + 
+         "#{d8_home}/models/#{model} " + 
+         "#{d8_home}/output/#{ENV['OUT1']} #{d8_home}/output/#{ENV['OUT2']}")
+end
+
+
+desc "Run spatial relation ablater."
+task :runSpatialRelationAblaterD8 => [:buildGui] do
+  python("#{dir3}/src/du/spatial_relation_ablater.py " + 
+         "'#{tklib_home}/nlp/data/Direction understanding subjects Floor 8 (Final).ods' " +
+         "#{d8_home}/models/#{model} #{d8_home}/regions/df8_small_filled_regions_gtruth.tag " + 
+         "#{d8_home}/df8_small_filled.cmf.gz")
+end
+
+
+desc "powerset"
+task :runSpatialRelationAblaterPlots do
+  python("#{dir3}/src/du/spatial_relation_ablater_plots.py #{ENV['OUT']}")
+end
+
+desc "Run Carmen D8"
+task :run_carmen_d8 do 
+  sh "cd #{dir3}/bin && python run_carmen.py #{d8_home}/models/min_entropy.pck"
+end
+
+desc "Run Carmen Media Lab"
+task :run_carmen_ml do 
+  sh "cd #{dir3}/bin && python run_carmen.py #{medialab}/models/min_entropy_extended.pck"
+end
+
+desc "Run Carmen D8"
+task :run_carmenQt_d8 => [:buildGui] do 
+  sh "python #{dir3}/src/du/runCarmen/runCarmen.py #{d8_home}/models/min_entropy.pck"
+end
+
+desc "display topo map for hri"
+task :plotTopologicalMapD8 do
+  python("#{dir3}/src/du/gui/topologicalMap.py #{d8_home}/models/#{model}")
+end
+
+
+desc "display topo map for hri"
+task :plotTopologicalMapD8 do
+  python("#{dir3}/src/du/gui/topologicalMap.py #{d8_home}/models/#{model}")
+end
+
+desc "display topo map for hri"
+task :plotTopologicalMapD8_full do
+  python("#{dir3}/src/du/gui/topologicalMap.py #{d8_full_home}/models/#{model}")
+end
+
+
+desc "display topo map for hri"
+task :plotTopologicalMapD1 do
+  python("#{dir3}/src/du/gui/topologicalMap.py #{d1_home}/models/#{model}")
+end
+
+desc "display topo map for hri"
+task :plotTopologicalMapD1_objdet do
+  python("#{dir3}/src/du/gui/topologicalMap.py #{d1_objdet_home}/models/#{model}")
+end
+
+desc "display topo map for hri"
+task :plotTopologicalMapStata3_aaai do
+  python("#{dir3}/src/du/gui/topologicalMap.py #{stata3_aaai_home}/models/#{model}")
+end
+
+
+
+
+
+desc "run greedy"
+task :runGreedy do
+  python("")
+end
+
+desc "Run LCM D1 3d"
+task :run_lcm_qt_d1_3d => [:buildGui] do 
+  sh "python #{dir3}/src/du/gui/lcm/lcm_qt.py #{d1_3d_home}/models/helicopter.pck #{d1_3d_home}/regions/df1_small_groundtruth.tag #{d1_3d_home}/direction_floor_1_small.cmf"
+end
+
+
+desc "Run LCM D1"
+task :run_lcm_qt_d1 => [:buildGui] do 
+  sh "python #{dir3}/src/du/gui/lcm/lcm_qt.py #{d1_home}/models/min_entropy_extended.pck #{d1_home}/regions/df1_small_groundtruth.tag #{d1_home}/direction_floor_1_small.cmf"
+end
+
+
+desc "Run LCM Forklift"
+task :run_lcm_qt_olin => [:buildGui] do 
+  sh "python #{dir3}/src/du/gui/lcm/lcm_qt.py #{olin_home}/models/enlivn.pck " + 
+    "#{olin_home}/tags/forklift_tags.tag #{olin_home}/forklift.cmf"
+end
+
+
+desc "Run LCM Forklift"
+task :run_lcm_qt_Forklift => [:buildGui] do 
+  sh "python #{dir3}/src/du/gui/lcm/lcm_qt.py #{forklift_home}/models/min_entropy.pck #{forklift_home}/tags/forklift_tags.tag #{forklift_home}/forklift.cmf"
+end
+
+desc "Run LCM Forklift"
+task :run_lcm_qt_Forklift => [:buildGui] do 
+  sh "python #{dir3}/src/du/gui/lcm_forklift/lcm_qt.py #{forklift_home}/models/min_entropy.pck #{forklift_home}/tags/forklift_tags.tag #{forklift_home}/forklift.cmf"
+end
+
+task :plot_random_d8_full do
+  python("#{dir3}/eval/plot_random.py #{d8_full_home}/models/#{model}")
+end
+
+task :plot_random_d1 do
+  python("#{dir3}/eval/plot_random.py #{d1_home}/models/#{model}")
+end
+
+
+desc "aij reruns"
+task :aij_reruns do
+  python("#{dir3}/src/du/aij_rerunner.py")
+end
+
+task :srel_mat_browser => [:buildGui] do
+  python("#{dir3}/src/du/gui/spatialRelationMatrixBrowser.py  #{d8_full_home}/models/#{model}")
+end
+
+task :plot_entropy do
+    python("#{dir3}/src/du/plot_entropy_experiments.py ")
+  end
