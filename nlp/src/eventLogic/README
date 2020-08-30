@@ -1,0 +1,10 @@
+Implementation of the event logic inference algorithms described in
+siskind01.pdf. 
+
+
+The test cases are not yet exhaustive.  In particular, the tense and
+andr operators need to be tested for all 13 allen relations.
+
+Also it seems like it should be possible to unify sets of spanning
+intervals but I haven't done that yet. 
+

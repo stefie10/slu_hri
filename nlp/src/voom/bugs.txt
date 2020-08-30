@@ -1,0 +1,4 @@
+* when it goes off screen
+* saving/loading
+* annotation task
+* 

@@ -1,0 +1,9 @@
+Metric space X. 
+
+x_init is path of figure and landmark, so four dimensions. 
+fx, fy, lx, ly
+
+
+
+X_obs is if there is no collision at any point for figure and landmark.
+
