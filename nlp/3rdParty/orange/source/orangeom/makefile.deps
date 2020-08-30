@@ -1,0 +1,35 @@
+ORANGEOM_OBJECTS =\
+	 obj/graphDrawing.o obj/mds.o obj/network.o obj/networkoptimization.o obj/optimizeAnchors.o obj/orangeom.o\
+	 obj/triangulate.o
+
+obj/graphDrawing.o : graphDrawing.cpp ../pyxtract/pyxtract.py externs.px | px/stamp
+obj/mds.o : mds.cpp ../pyxtract/pyprops.py ../pyxtract/pyxtract.py externs.px mds.px | ppp/stamp px/stamp
+obj/network.o : network.cpp ../pyxtract/pyprops.py ../pyxtract/pyxtract.py externs.px network.hpp network.px | ppp/stamp px/stamp
+obj/networkoptimization.o : networkoptimization.cpp ../pyxtract/pyprops.py ../pyxtract/pyxtract.py externs.px network.hpp networkoptimization.px | ppp/stamp px/stamp
+obj/optimizeAnchors.o : optimizeAnchors.cpp ../pyxtract/pyxtract.py externs.px | px/stamp
+obj/orangeom.o : orangeom.cpp ../pyxtract/pyxtract.py externs.px initialization.px orangeom.px | px/stamp
+obj/triangulate.o : triangulate.cpp ../pyxtract/pyxtract.py triangulate.px | px/stamp
+
+
+../orange/ppp/lists: ../pyxtract/defvectors.py
+	python ../pyxtract/defvectors.py
+ppp/stamp: ../pyxtract/pyprops.py networkoptimization.hpp network.hpp mds.hpp ../orange/ppp/lists ../orange/ppp/stamp
+	python ../pyxtract/pyprops.py -q -n ORANGEOM -l ../orange/ppp/stamp -l ../orange/ppp/lists
+
+px/stamp: ../pyxtract/pyxtract.py triangulate.cpp networkoptimization.cpp graphDrawing.cpp optimizeAnchors.cpp network.cpp orangeom.cpp mds.cpp | ppp/stamp
+	python ../pyxtract/pyxtract.py -m -q -n ORANGEOM -w OM triangulate.cpp networkoptimization.cpp graphDrawing.cpp optimizeAnchors.cpp network.cpp orangeom.cpp mds.cpp -l ../orange/px/stamp
+
+triangulate.px: 
+
+externs.px: 
+
+networkoptimization.px: 
+
+network.px: 
+
+orangeom.px: 
+
+initialization.px: 
+
+mds.px: 
+
