@@ -1,0 +1,5 @@
+thickwean -- classes=2 samples=200
+freiburg -- classes=9 samples=700
+intel -- classes 25 samples=3000
+mit2door -- classes=10 samples=800
+cartesium -- classes=19 samples=1500

@@ -1,0 +1,125 @@
+here=File.dirname(__FILE__)
+tklib_home=File.expand_path("#{here}/../..")
+urv_home="#{tklib_home}/data/directions/direction_unrealville"
+d1_home="#{tklib_home}/data/directions/direction_floor_1"
+d3_home="#{tklib_home}/data/directions/direction_floor_3"
+d8_home="#{tklib_home}/data/directions/direction_floor_8"
+d8_data_home="#{tklib_home}/../data/directions/direction_floor_8"
+d8_full_home="#{tklib_home}/data/directions/direction_floor_8_full"
+dir3 = "#{tklib_home}/pytools/direction_understanding3"
+dir_coocc = "#{tklib_home}/pytools/cooccurrence"
+urv_tag_file = "#{urv_home}/tags/urv.tag"
+
+Dir.chdir(tklib_home)
+
+dataset = ENV['DATASET']
+model = ENV['MODEL']
+name = ENV['NAME']
+CARMEN_HOME="#{tklib_home}/nlp/3rdParty/carmen/carmen/"
+ENV['PYTHONPATH'] = ["#{CARMEN_HOME}/src/python",
+                     "#{tklib_home}/utilities",
+                     "#{tklib_home}/cutilities/python",
+                     "#{tklib_home}/pytools/vision/src",
+                     "#{tklib_home}/pytools/map_partitioning/src",
+                     "#{tklib_home}/pytools/direction_understanding3/src",
+                     "#{tklib_home}/pytools/direction_understanding3/bin",
+		     "#{tklib_home}/pytools/cooccurrence/src",
+                    ].join(':')
+ENV['PYTHONPATH'] += ":" + `cd #{tklib_home}/nlp && rake -s pythonpath`.chomp
+ENV['LD_LIBRARY_PATH'] = `cd #{tklib_home}/nlp && rake -s ldlibrarypath`.chomp
+ENV['SLIMD_HOME'] = `cd #{tklib_home}/nlp && rake -s slimdhome`.chomp
+ENV['TKLIB_HOME'] = tklib_home
+
+$debug_python = (ENV['DEBUG_PYTHON'] or false)
+
+def python(file)
+  if ($debug_python)
+    sh "gdb --args python #{file}"
+  else
+    sh "python #{file}"
+  end
+end
+
+
+task :python do
+  sh "python"
+end
+
+task :pythonPath do
+  puts ENV['PYTHONPATH']
+end
+
+
+desc "run the trainer"
+task :train_models_svm do
+  sh "python #{dir_coocc}/bin/train_model.py #{d8_full_home}/keywords/d8_keywords.txt svm #{dataset}"
+end
+
+desc "run the trainer"
+task :train_models_bayes do
+  sh "python #{dir_coocc}/bin/train_model.py #{d8_full_home}/keywords/d8_keywords.txt bayes #{dataset}"
+end
+
+desc "run the trainer"
+task :train_models_tree do
+  sh "python #{dir_coocc}/bin/train_model.py #{d8_full_home}/keywords/d8_keywords.txt tree #{dataset}"
+end
+
+desc "run the trainer"
+task :train_models_boosting do
+  sh "python #{dir_coocc}/bin/train_model.py #{d8_full_home}/keywords/d8_keywords.txt boosting #{dataset}"
+end
+
+desc "run the trainer"
+task :train_models_randomforest do
+  sh "python #{dir_coocc}/bin/train_model.py #{d8_full_home}/keywords/d8_keywords.txt randomforest #{dataset}"
+end
+
+desc "plot the roc curve"
+task :plot_roc_curve_bayes do
+  sh "python #{dir_coocc}/bin/plot_roc_curve.py #{name} bayes #{dataset}"
+end
+
+desc "plot the roc curve"
+task :plot_roc_curve_tree do
+  sh "python #{dir_coocc}/bin/plot_roc_curve.py #{name} tree #{dataset}"
+end
+
+
+desc "plot the roc curve"
+task :plot_roc_curve_svm do
+  sh "python #{dir_coocc}/bin/plot_roc_curve.py #{name} svm #{dataset}"
+end
+
+desc "plot the roc curve"
+task :plot_roc_curve_boosted do
+  sh "python #{dir_coocc}/bin/plot_roc_curve.py #{name} boosting #{dataset}"
+end
+
+desc "plot the roc curve"
+task :plot_roc_curve_randomforest do
+  sh "python #{dir_coocc}/bin/plot_roc_curve.py #{name} randomforest #{dataset}"
+end
+
+
+desc "create the model"
+task :create_cooccurrence_model_esp do
+  sh "python #{dir_coocc}/bin/create_model.py #{tklib_home}/../data/ESPGame100k/ #{d8_full_home}/tags/df8_full_tags.tag #{d8_full_home}/direction_floor_8_full_filled.cmf.gz esp"
+end
+
+desc "create the model"
+task :create_cooccurrence_model_flickr do
+  sh "python #{dir_coocc}/bin/create_model.py #{tklib_home}/../data/flickr/ #{d8_full_home}/tags/df8_full_tags.tag #{d8_full_home}/direction_floor_8_full_filled.cmf.gz flickr"
+end
+
+
+desc "run the trainer"
+task :run_test_orange do
+  sh "python #{dir_coocc}/test/test_orange.py"
+end
+
+
+desc "create the model"
+task :test_predictions do
+  sh "python #{dir_coocc}/bin/test_predictions.py "
+end

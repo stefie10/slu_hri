@@ -1,0 +1,11 @@
+here=File.dirname(__FILE__)
+$tklib_home=File.expand_path("#{here}/../..")
+require "#{$tklib_home}/rakefile.rb"
+
+desc "Build everything."
+task :all
+
+task :setup do
+  sh "cd 3rdParty/jpype/ && rake setup"
+end
+

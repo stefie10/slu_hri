@@ -1,0 +1,103 @@
+here=File.dirname(__FILE__)
+tklib_home=File.expand_path("#{here}/../..")
+urv_home="#{tklib_home}/data/directions/direction_unrealville"
+d1_home="#{tklib_home}/data/directions/direction_floor_1"
+d3_home="#{tklib_home}/data/directions/direction_floor_3"
+stata3_home="#{tklib_home}/data/directions/stata3_aaai/"
+d8_home="#{tklib_home}/data/directions/direction_floor_8"
+d8_data_home="#{tklib_home}/../data/directions/direction_floor_8"
+d8_full_home="#{tklib_home}/data/directions/direction_floor_8_full"
+dir3 = "#{tklib_home}/pytools/direction_understanding3"
+urv_tag_file = "#{urv_home}/tags/urv.tag"
+
+# d3 is annontated
+# s3 is automatically detected objects
+
+model = ENV['MODEL']
+keyword = ENV['KEYWORD']
+outfile = ENV['OUTFILE']
+num_elts = ENV['NUM_ELTS']
+CARMEN_HOME="#{tklib_home}/nlp/3rdParty/carmen/carmen/src/python"
+ENV['PYTHONPATH'] = ["#{CARMEN_HOME}/src/python",
+                     "#{tklib_home}/utilities",
+                     "#{tklib_home}/cutilities/python",
+                     "#{tklib_home}/pytools/map_partitioning/src",
+                     `cd #{tklib_home}/nlp && rake -s pythonpath`.chomp,
+                    ].join(':')
+ENV['LD_LIBRARY_PATH'] = `cd #{tklib_home}/nlp && rake -s ldlibrarypath`.chomp
+ENV['SLIMD_HOME'] = `cd #{tklib_home}/nlp && rake -s slimdhome`.chomp
+ENV['TKLIB_HOME'] = tklib_home
+
+$debug_python = (ENV['DEBUG_PYTHON'] or false)
+
+def python(file)
+  if ($debug_python)
+    sh "gdb --args python #{file}"
+  else
+    sh "python #{file}"
+  end
+end
+
+
+task :python do
+  sh "python"
+end
+
+task :pythonPath do
+  puts ENV['PYTHONPATH']
+end
+
+task "skeletonize_map_d8" do
+  sh "python #{tklib_home}/pytools/voronoi/bin/skeletonize.py " +
+     "#{d8_full_home}/direction_floor_8_full_filled.cmf.gz " +
+     "#{d8_full_home}/skels/df8_small_skel_clean 2 1000"
+end
+
+task "view_skeleton_d8" do
+  sh "python #{tklib_home}/pytools/voronoi/bin/view_skeleton.py " +
+     "#{d8_full_home}/skels/df8_small_skel_clean.pck"
+end
+
+desc "Test Compute topological map"
+task :convert_skeleton_to_topology_d8_full do
+  sh "python bin/skeleton_to_topological_map.py "+
+     "--skeleton_file=#{d8_full_home}/skels/df8_small_skel_clean.pck "+
+     "--carmen_map=#{d8_full_home}/direction_floor_8_full.cmf.gz "+
+     "--output_topology=#{d8_full_home}/topology/direction_floor_8_full_topological_map.pck"
+end
+
+desc "Test Compute topological map"
+task :plot_topology_d8_full do
+  sh "python bin/plot_topology.py "+
+     "--topology=#{d8_full_home}/topology/direction_floor_8_full_topological_map.pck "+
+     "--carmen_map=#{d8_full_home}/direction_floor_8_full.cmf.gz "
+end
+
+
+desc "Test Compute topological map"
+task :test_topoD8 do
+  sh "echo 'try out the to MDP and see if it works'"
+  sh "python test/plot_topological_map.py #{d8_home}/skels/df8_small_skel.pck #{d8_home}/df8_small_filled.cmf.gz"
+end
+
+desc "Test Compute topological map"
+task :test_topoD8_full do
+  sh "echo 'try out the to MDP and see if it works'"
+  sh "python test/plot_topological_map.py #{d8_full_home}/skels/direction_floor_8_full_skel.pck #{d8_full_home}/direction_floor_8_full.cmf.gz"
+end
+
+desc "Test Compute topological map"
+task :test_topology_d8_full do
+  sh "python test/test_topo_map.py "+
+     "--topology=#{d8_full_home}/topology/direction_floor_8_full_topological_map.pck "+
+     "--carmen_map=#{d8_full_home}/direction_floor_8_full.cmf.gz "
+end
+
+
+desc "Test Compute topological map"
+task :test_topoD3 do
+  sh "echo 'try out the to MDP and see if it works'"
+  sh "cd #{tklib_home}/pytools/map_partitioning/test && python plot_topological_map.py #{d3_home}/skels/direction_floor_3_skel_smooth.pck #{d3_home}/direction_floor_3_small_filled.cmf"
+end
+
+

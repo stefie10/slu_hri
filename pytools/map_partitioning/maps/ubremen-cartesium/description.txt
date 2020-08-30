@@ -1,0 +1,20 @@
+Experiment Description
+----------------------
+
+Date        : 2006-09-12/14
+
+Where       : Univ of Bremen, Cartesium building
+
+Robot-type  : Pioneer2 with 1 LMS-Laser
+
+What        : 1 robots (magnum), manually steered
+
+Remarks     : 3 runs, same environment, different points in time,
+              partially different objects around.
+
+File format : carmen logger format (ODOM, ROBOTLASER, RAWLASER),
+
+Remarks     : - the files with the extention .log.gz are the raw logs
+              - the files with the extention .gfs.log.gz are the logs
+                corrected with our Rao-Blackwellized PF for SLAM, see:
+   http://www.informatik.uni-freiburg.de/~stachnis/research/rbpfmapper
