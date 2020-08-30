@@ -57,23 +57,23 @@ def python(file)
   puts ENV['PYTHONPATH'] 
   puts "\n"
   if ($debug_python)
-    sh "gdb --args python #{file}"
+    sh "gdb --args python2 #{file}"
   elsif  ($valgrind_python)
     sh "valgrind --tool=memcheck --suppressions=#{$tklib_home}/etc/valgrind-python.supp  --suppressions=#{$tklib_home}/etc/valgrind-java.supp python -u #{file}"         
   elsif ($memprof_python)
-    sh "memprof /usr/bin/python #{file}"
+    sh "memprof /usr/bin/python2 #{file}"
   elsif ($pdb_python)
     sh "pdb #{file}"
   elsif ($efence_python)
     sh "export LD_PRELOAD=libefence.so.0.0 && gdb --args python #{file}"
   else
-    sh "time python #{file}"
+    sh "time python2 #{file}"
   end
 end
 
 
 task :python do
-  sh "python"
+  sh "python2"
 end
 
 task :pythonPath do

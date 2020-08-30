@@ -1,0 +1,6 @@
+task :setup do
+  sh "unzip Polygon-2.0.3.zip"
+  sh "cd Polygon-2.0.3 && python build"
+  sh "cd Polygon-2.0.3 && python install --prefix /home/stefie10/dev/slu_hri/build/"
+
+  
