@@ -1,0 +1,64 @@
+This is the spatial language understanding package written by the
+Robust Robotics Research Group.
+
+* You must install java and set the JAVA_HOME environment variable.
+* Run "rake setup" to compile 3rd party dependencies. 
+* To test the forklift mobile-manipulation code, run "rake
+  train_forklift" in du_crf3 to build the model.  Then run "rake
+  tests" in forklift.  If all these test cases pass, it is
+  successfully following commands such as "put the tire pallet on the
+  truck."
+
+=========================
+Installation instructions:
+=========================
+(These were tested on a fresh Ubuntu 10.04 VM)
+
+Install java by adding the sun repository:
+sudo add-apt-repository "deb http://archive.canonical.com/ lucid partner"
+sudo apt-get update
+sudo apt-get install sun-java6-jdk
+echo export JAVA_HOME=/usr/lib/jvm/java-6-sun >> ~/.bashrc
+
+All other packages should be available normally with apt-get. 
+
+Required Packages:
+rake
+subversion
+python2.6
+python2.6-dev
+ant
+ant-optional 
+sun-java6-jdk
+build-essential
+pyqt4-dev-tools
+gsl-bin
+libgsl0-dev
+swig
+python-yaml
+python-nltk
+python-scipy
+python-enchant
+
+Additional requirements:
+Minimum 1280 Mb RAM
+
+=========================
+Setup:
+=========================
+rake setup
+
+
+
+
+
+* Retrain model.  Comment out pickle in nlp/src/spatialRelationsClassifier.py.   rake runSrClassifierTrainer. 
+
+* Build polygon in 3rdParty. 
+* Build crf++ in nlp/3rdParty
+
+* rake cache_lmap_d8_full
+* create_model_spatial_relations_model1_d8_full
+
+$ rake create_srel_mat_spatial_relations_model1_d8_full
+

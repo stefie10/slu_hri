@@ -1,0 +1,11 @@
+Naming conventions for spatial_feature_extractor.c:
+
+* sfe_GEOM_DESC_features for all the low level feature groups.  DESC
+   can be blank if there aren't multiple subgroups.  Example:
+   sfe_path_polygon_features, sfe_polygon_features, sfe_prism_features,
+   sfe_polygon_avs_features
+
+* For feature groups associated with edges in the model we have:
+   sfe_ESDCTYPE_GEOM_ESDCTYPE_GEOM.  Examples: sfe_f_path_l_polygon
+   sfe_f_polygon_l_polygon, sfe_f_prism_l_prism
+

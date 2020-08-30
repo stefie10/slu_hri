@@ -1,0 +1,76 @@
+here=File.dirname(__FILE__)
+tklib_home=File.expand_path("#{here}/..")
+Dir.chdir(tklib_home)
+python_num=`python -c 'import sys; print "python" + sys.version[0:3]'`
+
+tkdata="#{here}/../tkdata"
+
+model = ENV['MODEL']
+$debug_python = (ENV['DEBUG_PYTHON'] or false)
+def python(file)
+  if ($debug_python)
+    sh "gdb --args python #{file}"
+  else
+    sh "python #{file}"
+  end
+end
+
+
+MAP= ENV['MAP']
+LOGFILE= ENV['LOGFILE']
+SKEL= ENV['SKEL']
+#YARP_HOME=(ENV['YARP_HOME'] or "#{tklib_home}/3rdParty/yarp/yarp2/")
+YARP_HOME=(ENV['YARP_HOME'] or "/home/stefie10/dev/cogmac/muri/dialog/speech_io/3rdParty/yarp/yarp2/")
+ENV['CARMEN_HOME'] = "#{tklib_home}/nlp/3rdParty/carmen/carmen/"
+CARMEN_HOME=(ENV['CARMEN_HOME'] or "#{tklib_home}/nlp/3rdParty/carmen/carmen/")
+ENV['PYTHONPATH'] = ["#{CARMEN_HOME}/src/python",
+                     "#{tklib_home}/python",
+                     "#{tklib_home}/utilities",
+                     "#{tklib_home}/cutilities/python",
+                     "#{tklib_home}/pytools/trajopt4.0/src",
+                     "#{tklib_home}/pytools/vision/src",
+                     "#{tklib_home}/pytools/belief_propagation",
+                     "#{tklib_home}/pytools/map_partitioning/src",
+                     "#{tklib_home}/pytools/direction_understanding3/src",
+                     "#{tklib_home}/pytools/direction_understanding3/bin",
+                     "#{tklib_home}/pytools/pylcm/src/",
+		     "#{tklib_home}/pytools/du_pomdp/src",
+		     "#{tklib_home}/pytools/swissranger/src",
+                     "#{tklib_home}/pytools/hmm/src",
+                     "#{tklib_home}/3rdParty/ghmm/ghmmwrapper/build/lib.linux-i686-2.6/",
+                     "#{tklib_home}/3rdParty/ghmm/ghmmwrapper",
+                     "#{tklib_home}/3rdParty/ghmm/ghmmwrapper",
+                     "#{tklib_home}/3rdParty/yarp/yarp2/example/swig/",
+                    ].join(':')
+ENV['PYTHONPATH'] += ":" + `cd #{tklib_home}/nlp && rake -s pythonpath`.chomp
+ENV['LD_LIBRARY_PATH'] = `cd #{tklib_home}/nlp && rake -s ldlibrarypath`.chomp
+ENV['LD_LIBRARY_PATH'] += ":#{tklib_home}/3rdParty/ghmm/ghmm/.libs"
+ENV['SLIMD_HOME'] = `cd #{tklib_home}/nlp && rake -s slimdhome`.chomp
+ENV['TKLIB_HOME'] = tklib_home
+ENV['ALCHEMY_HOME'] = "#{tklib_home}/nlp/3rdParty/markov_logic_networks/alchemy/"
+ENV['PATH'] = ENV['PATH']+":#{tklib_home}/nlp/3rdParty/carmen3D/carmen3D/bin/"
+
+desc "View Map"
+task :muri_fill_people do
+  sh "echo 'fill muri people'"
+  sh "cd #{tklib_home}/cutilities/bin/ && python muri_fill_people.py #{tklib_home}/data/directions/direction_unrealville/unrealville2.cmf.gz #{tklib_home}/data/directions/direction_unrealville/people/task.xml"
+end
+
+
+desc "build cutilities"
+task :build do
+  sh "echo 'building cutilities'"
+  sh "cd #{here}/src && make CARMEN_HOME=#{CARMEN_HOME} PYTHON=#{python_num}"
+  sh "cd #{here}/python && make CARMEN_HOME=#{CARMEN_HOME} PYTHON=#{python_num}"
+end
+
+
+
+
+desc "clean"
+task :clean do
+  sh "cd #{here}/src && make clean"
+  sh "cd #{here}/python && make clean"
+end
+
+task :default => [:build]
