@@ -1,0 +1,42 @@
+Index: orange/orange/orngTest.py
+===================================================================
+--- orange.orig/orange/orngTest.py	2008-06-26 14:23:28.000000000 -0400
++++ orange/orange/orngTest.py	2008-06-26 14:23:32.000000000 -0400
+@@ -17,8 +17,9 @@
+ #### Data structures
+ 
+ class TestedExample:
+-    def __init__(self, iterationNumber=None, actualClass=None, n=0, weight=1.0):
++    def __init__(self, ex, iterationNumber=None, actualClass=None, n=0, weight=1.0):
+         self.classes = [None]*n
++        self.example = ex
+         self.probabilities = [None]*n
+         self.iterationNumber = iterationNumber
+         self.actualClass= actualClass
+@@ -231,7 +232,7 @@
+ 
+         conv = examples.domain.classVar.varType == orange.VarTypes.Discrete and int or float
+         testResults = ExperimentResults(cv.folds, [l.name for l in learners], examples.domain.classVar.values.native(), weight!=0, examples.domain.classVar.baseValue)
+-        testResults.results = [TestedExample(folds[i], conv(examples[i].getclass()), nLrn, examples[i].getweight(weight))
++        testResults.results = [TestedExample(examples[i], folds[i], conv(examples[i].getclass()), nLrn, examples[i].getweight(weight))
+                                for i in range(len(examples))]
+ 
+         if cache and testResults.loadFromFiles(learners, fnstr):
+@@ -328,7 +329,7 @@
+ 
+     conv = examples.domain.classVar.varType == orange.VarTypes.Discrete and int or float        
+     testResults = ExperimentResults(nIterations, [getobjectname(l) for l in learners], values, weight!=0, basevalue)
+-    testResults.results = [TestedExample(indices[i], conv(examples[i].getclass()), nLrn, examples[i].getweight(weight))
++    testResults.results = [TestedExample(examples[i], indices[i], conv(examples[i].getclass()), nLrn, examples[i].getweight(weight))
+                            for i in range(len(examples))]
+ 
+     if argkw.get("storeExamples", 0):
+@@ -489,7 +490,7 @@
+     
+     conv = testset.domain.classVar.varType == orange.VarTypes.Discrete and int or float
+     for ex in testset:
+-        te = TestedExample(iterationNumber, conv(ex.getclass()), 0, ex.getweight(testweight))
++        te = TestedExample(ex, iterationNumber, conv(ex.getclass()), 0, ex.getweight(testweight))
+ 
+         for classifier in classifiers:
+             # This is to prevent cheating:

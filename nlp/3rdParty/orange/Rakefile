@@ -1,0 +1,6 @@
+desc "Build orange."
+task :setup do
+  sh "cd source && make"
+  
+end
+  
