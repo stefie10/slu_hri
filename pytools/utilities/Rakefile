@@ -1,0 +1,20 @@
+here=File.dirname(__FILE__)
+$tklib_home=File.expand_path("#{here}/../..")
+require "#{$tklib_home}/rakefile.rb"
+
+make_python_targets(:build_python, FileList["python/*.py"])
+
+desc "Build everything."
+task :all => [:build_python] 
+
+
+
+desc "Clean everything."
+task :clean => [:clean_python] 
+
+task :setup do
+  sh "cd 3rdParty/shove/ && rake setup"
+  # sh "cd 3rdParty/pylibmc/ && rake setup" not actively used, but may
+  # need to switch for speed.  bug so need to install latest libmc too
+  # probably.
+end
