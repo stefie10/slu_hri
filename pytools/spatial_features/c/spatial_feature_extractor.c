@@ -2,7 +2,7 @@
 #include "spatial_features.h"
 #include <assert.h>
 #include <stdio.h>
-#include <ext/hash_map>
+#include <unordered_map>
 #include <string.h>
 using namespace __gnu_cxx;
 struct eqstr
@@ -27,7 +27,7 @@ double sfe_score_feature_map(vector<string> fnames, gsl_vector * fvalues,
   if (fvalues == NULL || weights == NULL) {
     return 0.0;
   }
-  hash_map<const char *, double, hash<const char*>, eqstr> weightmap;
+  unordered_map<const char *, double, hash< const char* >, eqstr > weightmap;
 
   for (unsigned int i = 0; i < weights->size; i++) {
     weightmap[weight_names[i].c_str()] = gsl_vector_get(weights, i);

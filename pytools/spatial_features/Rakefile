@@ -2,7 +2,7 @@ here=File.dirname(__FILE__)
 $tklib_home=File.expand_path("#{here}/../..")
 require "#{$tklib_home}/rakefile.rb"
 
-$CFLAGS = "-c -pipe -Wall -W   -DQT_SHARED -DQT_NO_DEBUG -DQT_THREAD_SUPPORT  -fPIC -fpic"
+$CFLAGS = "-c -pipe -Wall -W   -DQT_SHARED -DQT_NO_DEBUG -DQT_THREAD_SUPPORT  -fPIC -fpic -fpermissive"
 
 desc "Build everything."
 lib = "c/libspatial_features.so"
@@ -12,7 +12,7 @@ ldflags = "-lgsl_utilities"
 
 
 make_o_targets(:build_c, FileList["c/**/*.c"],
-               ".c", "-Wall -Ic -fPIC")
+               ".c", "-Wall -Ic -fPIC -fpermissive")
 
 make_lib_targets(:build_c, lib, FileList["c/*.c"], ldflags, $lib_build_dir)
 
