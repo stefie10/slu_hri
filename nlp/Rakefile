@@ -1,0 +1,434 @@
+here=File.dirname(__FILE__)
+tklib_home=File.expand_path("#{here}/..")
+uvr_home="#{tklib_home}/data/directions/direction_unrealville"
+d3_home="#{tklib_home}/data/directions/direction_floor_3"
+hsp_home="#{tklib_home}/data/directions/direction_hsp/"
+stata3_aaai_home="#{tklib_home}/data/directions/stata3_aaai"
+
+$debug_python = (ENV['DEBUG_PYTHON'] or false)
+def python(file)
+  if ($debug_python)
+    sh "gdb --args python #{file}"
+  else
+    sh "python #{file}"
+  end
+end
+
+
+ENV['TKLIB_HOME']= tklib_home
+CARMEN_HOME="#{tklib_home}/nlp/3rdParty/carmen/carmen/src/python"
+ENV['LD_LIBRARY_PATH'] = ["#{here}/3rdParty/crf++/CRF++-0.53/.libs/",
+                          "/usr/local/lib", 
+                          "#{here}/3rdParty/orange/orange",
+                          "#{here}/3rdParty/orange/",
+                          "#{tklib_home}/build/lib/",
+                         ].join(':')
+ENV['SLIMD_HOME'] = "#{here}/3rdParty/slimd/slimd"
+ENV['PYTHONPATH'] = ["#{here}/3rdParty/nltk/nltk-0.9.9/",
+                     "#{here}/3rdParty/crf++/CRF++-0.53/python/build/lib.linux-i686-2.6",
+                     "#{here}/3rdParty/crf++/CRF++-0.53/python/build/lib.linux-x86_64-2.7",
+                     "/usr/local/share/qgis/python",
+                     "#{here}/c_src/swig/",
+                     "#{here}/3rdParty/orange/",
+                     "#{here}/3rdParty/orange/orange",
+                     "#{here}/3rdParty/orange/orange/OrangeWidgets",
+                     "#{here}/3rdParty/orange/orange/OrangeWidgets/Classify",
+                     "#{CARMEN_HOME}/src/python",
+                     "#{tklib_home}/python",
+                     "#{tklib_home}/pytools/utilities/python",
+                     "#{tklib_home}/cutilities/python",
+                     "#{tklib_home}/pytools/trajopt4.0/src",
+                     "#{tklib_home}/pytools/vision/src",
+                     "#{tklib_home}/pytools/belief_propagation",
+                     "#{tklib_home}/pytools/map_partitioning/src/",
+                     "#{tklib_home}/pytools/spatial_features/src/",
+                     "#{tklib_home}/pytools/gsl_utilities/python", 
+                     "#{tklib_home}/pytools/gsl_utilities/swig", 
+                     "#{tklib_home}/pytools/spatial_features/python", 
+                     "#{tklib_home}/pytools/spatial_features/swig", 
+                     "#{here}/src",
+                    ].join(':') 
+desc "Print the python path"
+task :pythonpath do
+  puts ENV["PYTHONPATH"]
+end
+task :nlphome do
+  puts ENV["NLP_HOME"]
+end
+task :ldlibrarypath do
+  puts ENV["LD_LIBRARY_PATH"]
+end
+task :slimdhome do
+  puts ENV["SLIMD_HOME"]
+end
+
+desc "Run the test cases."
+task :tests => [:buildGui] do
+  sh "python /usr/bin/nosetests -v"
+end
+
+desc "Run one test case, whatever is commented in. Used for debugging."
+task :partial_tests => [:buildGui] do
+  #python("/usr/bin/nosetests -v src/math2d_test.py")
+  python("/usr/bin/nosetests -v src/tklib_math2d_test.py")
+  #python("/usr/bin/nosetests -v src/spellcheck_test.py")
+  #python("/usr/bin/nosetests src/flickrLda/ldaModel_test.py")
+  #python("/usr/bin/nosetests src/voom/parsing/crf_test.py")
+  #python("/usr/bin/nosetests src/voom/assignment_test.py")
+  #python("/usr/bin/nosetests src/eventLogic/ src/voom")
+  #python("/usr/bin/nosetests src/voom/agents_test.py")
+  #python("/usr/bin/nosetests src/voom/verb_classifier_test.py")
+  #python("/usr/bin/nosetests src/voom/event_logic/inference_test.py")
+
+  #python("/usr/bin/nosetests src/eventLogic/")
+  #python("/usr/bin/nosetests src/eventLogic/interval_test.py")
+  #python("/usr/bin/nosetests src/eventLogic/allenRelations_test.py")
+  #python("/usr/bin/nosetests src/eventLogic/spanningInterval_test.py")
+  #python("/usr/bin/nosetests src/eventLogic/inference_test.py")
+  #python("/usr/bin/nosetests src/voom/verb_classifier_test.py")
+  #python("/usr/bin/nosetests src/voom/corpus_rrg_openended_test.py")
+  #python("/usr/bin/nosetests src/videoRetrieval/corpus_cogmac_openended_test.py")
+  #sh "python /usr/bin/nosetests src/routeDirectionCorpusReader_test.py"
+  #sh "python /usr/bin/nosetests src/sentenceTokenizer_test.py"
+  #sh "python /usr/bin/nosetests src/standoff_test.py"
+  #sh "python /usr/bin/nosetests src/annotations_test.py"
+  #sh "python /usr/bin/nosetests src/crfEntityExtractor_test.py"
+  #sh "python /usr/bin/nosetests src/tokenizer_test.py"
+  #sh "python /usr/bin/nosetests src/maphacking/spatialRelationClassifier_test.py"
+  #sh "python /usr/bin/nosetests src/spatialRelationClassifier_test.py"
+end
+
+desc "run the chunker"
+task :runChunker do
+  sh "python src/chunker.py"
+end
+
+desc "run python"
+task :python do
+  sh "python"
+end
+
+FileList['src/*.ui', 'src/**/*.ui'].each do |src|
+  target = File.join(File.dirname(src),
+                     File.basename(src, ".ui") + '_ui.py')
+  file  target => [src] do |t|
+    sh "pyuic4 #{t.prerequisites.join(' ')} -o #{t.name}\n"
+
+  end
+  task :buildGui => [target]
+end
+
+desc "Run the annotator for the chunker"
+task :runChunkerAnnotator => [:buildGui] do
+  sh "python src/chunkerAnnotator/chunkerAnnotator.py"  
+end
+
+desc "Score the chunker"
+task :runChunkerScorer do
+  sh "python src/chunkerScorer.py"
+end
+
+desc "Run the exporter for matthias"
+task :runSdcExporter do
+  sh "python src/chunkerAnnotator/exporter.py"  
+end
+
+desc "Run the exporter for matthias"
+task :runDialogReader do
+  sh "python src/chunkerAnnotator/dialog/reader.py"  
+end
+
+desc "Run the exporter for matthias"
+task :runDialogAnnotator => [:buildGui] do
+  sh "python src/chunkerAnnotator/dialog/dialogAnnotator.py"  
+end
+
+desc "dialog hisotgram"
+task :histogramDialog do
+  python("src/chunkerAnnotator/dialog/histogram_dialog.py")
+end
+
+
+desc "Histograms"
+task :route_direction_histograms do
+  sh "python src/route_direction_histograms.py"
+end
+
+
+desc "CRF chunker"
+task :runCrfChunkerTraining do
+  sh "python src/crfEntityExtractor.py"
+end
+
+
+desc "Compare annotations"
+task :runCompareAnnotations do
+  sh "python src/compareAnnotations.py"
+end
+
+
+desc "Shortest path"
+task :runShortestPath => [:buildGui] do
+  sh "python src/maphacking/test.py #{tklib_home}/data/directions/direction_floor_8/skels/df8_small_skel.pck #{tklib_home}/data/directions/direction_floor_8/df8_small_filled.cmf"
+end
+
+
+desc "Annotation for spatial prepositions"
+task :runMapPathAssignmentCreator => [:buildGui] do
+  sh "python src/maphacking/makeAssignment.py"
+end
+
+
+desc "Annotation for spatial prepositions"
+task :runMapPathAnnotator => [:buildGui] do
+  sh "python src/maphacking/pathAnnotatorWindow.py"
+end
+
+desc "Annotation for spatial prepositions, version for Grem's class"
+task :runMapPathAnnotatorGremClass => [:buildGui] do
+  sh "python src/maphacking/pathAnnotatorWindowGrem.py"
+end
+
+
+desc "Run classifier on labeled example corpus"
+task :runSrClassifierTrainer do
+  python("src/maphacking/trainer.py pickle")
+end
+
+desc "Run classifier on labeled example corpus"
+task :runSrClassifierTrainerNway do
+  sh "python src/maphacking/trainer.py nway"
+end
+
+desc "Run classifier on labeled example corpus"
+task :runSrClassifierTrainerPlot do
+  python("src/maphacking/trainer.py plot")
+end
+
+desc "Run classifier on labeled example corpus"
+task :runSrClassifierTrainerAblationPlot do
+  python("src/maphacking/trainer.py ablate")
+end
+
+
+desc "Export an annotation to a dotty file."
+task :runDottyExporter do
+  sh "python src/dottyExporter.py"
+end
+
+desc "Compute various corpus stats."
+task :runSdcCorpusStats do
+  sh "python src/sdcCorpusStats.py"
+end
+
+desc "Compute unhandled SDCs."
+task :runHandledSdcs do
+  sh "python src/handledSdcs.py"
+end
+
+
+desc "run editor window on our classifiers"
+task :runSrClassifierViewer => [:buildGui] do
+  sh "python src/slimd/gui/srClassifierViewer.py"
+end
+
+desc "run editor window on our classifiers"
+task :runSrSessionViewer => [:buildGui] do
+  sh "python src/slimd/gui/srSessionViewer.py"
+end
+
+
+desc "print some physical objects"
+task :print_some_objects do
+  sh "python src/breadbox/physical_objects.py"
+end
+
+
+desc "train classifiers for breadbox"
+task :breadbox_train do
+  sh "python src/breadbox/trainer.py"
+end
+
+desc "pairwise train classifiers for breadbox"
+task :breadbox_pairwise_train do
+  sh "python src/breadbox/pairwise_trainer.py"
+end
+
+
+desc "make big lmap"
+task :breadbox_tagfile do
+  sh "python src/breadbox/tagfile.py " +
+    "#{tklib_home}/data/flickr/flickr_cache.pck " +
+    "#{tklib_home}/data/directions/breadbox/nouns_stefie10.txt "  +
+    "#{tklib_home}/data/directions/breadbox/lmap.pck"
+end
+
+
+desc "check annotations"
+task :breadbox_check_annotations do
+  sh "python src/breadbox/check_annotations.py"
+end
+
+desc "interrater agreement"
+task :breadbox_agreement do
+  sh "python src/breadbox/agreement.py"
+end
+
+
+desc "gui"
+task :breadbox_ui  => [:buildGui] do
+  sh "python src/breadbox/viewer.py"
+end
+
+
+desc "chasing"
+task :recorder_ui => [:buildGui] do
+  sh "python src/voom/gui/recorder.py #{d3_home}/direction_floor_3_small_filled.cmf  #{d3_home}/tags/df3_small_tags.tag  #{d3_home}/skels/direction_floor_3_skel.pck"
+end
+
+
+desc "spatial motion verbs"
+task :runSmvHistograms do
+  python("src/voom/histogram_rrg_openended.py")
+end
+
+desc "smv trainer"
+task :runSmvTrainerD3 do
+  sh "python src/voom/trainer_pacman.py #{d3_home}/direction_floor_3_small_filled.cmf  #{d3_home}/tags/df3_small_tags.tag  #{d3_home}/skels/direction_floor_3_skel.pck data/aaai_2010_smv/stefie10/assignment*.1.yaml"
+end
+
+
+desc "smv trainer"
+task :runSmvSaveClassifiersD3 do
+  sh "python src/voom/saveClassifiers.py"
+end
+
+
+
+desc "make assignment"
+task :makeSmvAssignment do
+  python("src/voom/gui/makeAssignment.py #{d3_home}/direction_floor_3_small_filled.cmf  #{d3_home}/tags/df3_small_tags.tag  #{d3_home}/skels/direction_floor_3_skel.pck")
+end
+
+desc "make assignment"
+task :makeSmvAssignmentStata3Aaai do
+  python("src/voom/gui/makeAssignment.py #{stata3_aaai_home}/stata3_aaai.cmf.gz  #{stata3_aaai_home}/tags/tags-objdet-manual-thresholds.tag  #{stata3_aaai_home}/skels/direction_floor_3_skel.pck")
+end
+
+desc "make assignment"
+task :runSmvAssignmentEditor => [:buildGui] do
+  python("src/voom/gui/assignments/assignmentEditor.py #{d3_home}/direction_floor_3_small_filled.cmf  #{d3_home}/tags/df3_small_tags.tag  #{d3_home}/skels/direction_floor_3_skel.pck data/aaai_2010_smv/stefie10/assignment_multiple_2.yaml")
+end
+
+desc "make assignment"
+task :runSmvAssignmentEditorS3 => [:buildGui] do
+  python("src/voom/gui/assignments/assignmentEditor.py #{stata3_aaai_home}/stata3_aaai.cmf.gz  #{stata3_aaai_home}/tags/tags-objdet-manual-thresholds.tag  #{stata3_aaai_home}/skels/direction_floor_3_skel.pck data/aaai_2010_smv/assignment6.yaml")
+end
+
+
+desc "assignment"
+task :runSmvAnnotatorS3 => [:buildGui] do
+  python("src/voom/gui/assignments/assignmentEditor.py #{stata3_aaai_home}/stata3_aaai.cmf.gz  #{stata3_aaai_home}/tags/tags-objdet-manual-thresholds.tag  #{stata3_aaai_home}/skels/direction_floor_3_skel.pck data/aaai_2010_smv/tkollar/assignment6.1.yaml")
+end
+
+desc "assignment"
+task :runSmvAnnotator => [:buildGui] do
+  python("src/voom/gui/assignments/assignmentEditor.py #{d3_home}/direction_floor_3_small_filled.cmf  #{d3_home}/tags/df3_small_tags.tag  #{d3_home}/skels/direction_floor_3_skel.pck data/aaai_2010_smv/stefie10/assignment_multiple_1.yaml")
+end
+
+
+desc "subset viewer"
+task :runSubsetViewer => [:buildGui] do
+  python("src/voom/gui/subsetViewer.py #{d3_home}/direction_floor_3_small_filled.cmf  #{d3_home}/tags/df3_small_tags.tag  #{d3_home}/skels/direction_floor_3_skel.pck data/aaai_2010_smv/stefie10/assignment1.2.yaml")
+end
+
+
+desc "assignment"
+task :runSmvAnnotatorTK => [:buildGui] do
+  python("src/voom/gui/assignments/assignmentEditor.py #{d3_home}/direction_floor_3_small_filled.cmf  #{d3_home}/tags/df3_small_tags.tag  #{d3_home}/skels/direction_floor_3_skel.pck data/aaai_2010_smv/tkollar/assignment5.1.yaml")
+end
+
+
+desc "assignment"
+task :runSmvChunkerTraining => [:buildGui] do
+  python("src/voom/parsing/crf.py")
+end
+
+
+
+desc "convert"
+task :convert do
+  python ("src/voom/convertAgents.py")
+end
+
+desc "print corpus"
+task :print_corpus do
+  python("src/voom/corpus_rrg_openended.py")
+end
+
+
+desc "print background"
+task :renderBackground do
+  python("src/voom/gui/backgroundMap.py #{d3_home}/direction_floor_3_small_filled.cmf  #{d3_home}/tags/df3_small_tags.tag  #{d3_home}/skels/direction_floor_3_skel.pck")
+end
+
+desc "print background"
+task :renderBackgroundHsp do
+  python("src/voom/gui/backgroundMap.py #{hsp_home}/hsp.cmf  " + 
+         "#{hsp_home}/tags/objects.all.tag  " + 
+         "#{hsp_home}/skels/skel.pck")
+end
+
+
+desc "print background"
+task :renderBackgroundS3 do
+  python("src/voom/gui/backgroundMap.py   #{stata3_aaai_home}/stata3_aaai.cmf.gz  #{stata3_aaai_home}/tags/tags-objdet-manual-thresholds.tag  #{stata3_aaai_home}/skels/direction_floor_3_skel.pck")
+end
+
+
+
+desc "rrt"
+
+task :runPlaneRrt do
+  python("src/rrt/plane_rrt.py")
+end
+
+
+desc "Run rrt"
+task :runTwoAgentRrt => [:buildGui] do
+  python("#{here}/src/rrt/twoAgentRrt.py")
+end
+
+
+
+
+desc "lda training"
+task :makeLdaInput do
+  python("#{here}/src/flickrLda/makeTraining.py")
+end
+
+desc "train lda"
+task :trainLda do
+ sh "#{here}/3rdParty/gibbslda++/GibbsLDA++-0.2/src/lda " + 
+         "-est -alpha 0.5 -beta 0.1 -ntopics 200 -niters 2000 -savestep 100 -twords 20 -dfile data/flickrLda.keywords/flickrLda.dat"
+end
+
+
+desc "train lda"
+task :ldaLogLiklihood do
+  python("src/flickrLda/logLiklihood.py")
+end
+
+
+
+
+
+desc "print sr features"
+task :printSlimdFeatures do
+  python("src/slimd/print_features.py")
+end
+
+desc "export to asp"
+task :exportToWasp do
+  python("src/exportToWasp.py")
+end
