@@ -1,0 +1,56 @@
+<?xml version="1.0" ?>
+<session>
+  <instruction>
+    <annotation>
+      <figure end="0" start="0"/>
+      <verb end="4" start="0"/>
+      <spatialRelation end="19" start="5"/>
+      <landmark end="62" start="21"/>
+    </annotation>
+    <annotation>
+      <figure end="0" start="0"/>
+      <verb end="75" start="71"/>
+      <spatialRelation end="0" start="0"/>
+      <landmark end="126" start="76"/>
+    </annotation>
+    <annotation>
+      <figure end="0" start="0"/>
+      <verb end="139" start="129"/>
+      <spatialRelation end="147" start="140"/>
+      <landmark end="196" start="148"/>
+    </annotation>
+    <annotation>
+      <figure end="156" start="153"/>
+      <verb end="162" start="157"/>
+      <spatialRelation end="0" start="0"/>
+      <landmark end="196" start="163"/>
+    </annotation>
+    <annotation>
+      <figure end="0" start="0"/>
+      <verb end="203" start="199"/>
+      <spatialRelation end="209" start="204"/>
+      <landmark end="0" start="0"/>
+    </annotation>
+    <annotation>
+      <figure end="0" start="0"/>
+      <verb end="218" start="214"/>
+      <spatialRelation end="226" start="219"/>
+      <landmark end="256" start="227"/>
+    </annotation>
+    <annotation>
+      <figure end="236" start="233"/>
+      <verb end="242" start="237"/>
+      <spatialRelation end="0" start="0"/>
+      <landmark end="256" start="243"/>
+    </annotation>
+  </instruction>
+  <instruction/>
+  <instruction/>
+  <instruction/>
+  <instruction/>
+  <instruction/>
+  <instruction/>
+  <instruction/>
+  <instruction/>
+  <instruction/>
+</session>

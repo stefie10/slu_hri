@@ -1,0 +1,359 @@
+<?xml version="1.0" ?>
+<session>
+  <instruction>
+    <annotation>
+      <verb end="6" start="0"/>
+      <spatialRelation end="11" start="7"/>
+      <landmark end="62" start="12"/>
+      <figure end="0" start="0"/>
+    </annotation>
+    <annotation>
+      <verb end="6" start="0"/>
+      <spatialRelation end="77" start="63"/>
+      <landmark end="137" start="78"/>
+      <figure end="0" start="0"/>
+    </annotation>
+    <annotation>
+      <verb end="141" start="139"/>
+      <spatialRelation end="161" start="142"/>
+      <landmark end="183" start="162"/>
+      <figure end="0" start="0"/>
+    </annotation>
+    <annotation>
+      <verb end="198" start="185"/>
+      <spatialRelation end="0" start="0"/>
+      <landmark end="0" start="0"/>
+      <figure end="0" start="0"/>
+    </annotation>
+    <annotation>
+      <verb end="227" start="203"/>
+      <spatialRelation end="0" start="0"/>
+      <landmark end="0" start="0"/>
+      <figure end="0" start="0"/>
+    </annotation>
+  </instruction>
+  <instruction>
+    <annotation>
+      <verb end="0" start="0"/>
+      <spatialRelation end="4" start="0"/>
+      <landmark end="56" start="5"/>
+      <figure end="0" start="0"/>
+    </annotation>
+    <annotation>
+      <verb end="62" start="58"/>
+      <spatialRelation end="67" start="63"/>
+      <landmark end="109" start="68"/>
+      <figure end="0" start="0"/>
+    </annotation>
+    <annotation>
+      <verb end="125" start="114"/>
+      <spatialRelation end="0" start="0"/>
+      <landmark end="0" start="0"/>
+      <figure end="0" start="0"/>
+    </annotation>
+    <annotation>
+      <verb end="137" start="130"/>
+      <spatialRelation end="0" start="0"/>
+      <landmark end="172" start="138"/>
+      <figure end="130" start="127"/>
+    </annotation>
+    <annotation>
+      <verb end="186" start="174"/>
+      <spatialRelation end="193" start="187"/>
+      <landmark end="204" start="194"/>
+      <figure end="0" start="0"/>
+    </annotation>
+    <annotation>
+      <verb end="234" start="232"/>
+      <spatialRelation end="0" start="0"/>
+      <landmark end="251" start="235"/>
+      <figure end="231" start="206"/>
+    </annotation>
+  </instruction>
+  <instruction>
+    <annotation>
+      <verb end="0" start="0"/>
+      <spatialRelation end="4" start="0"/>
+      <landmark end="57" start="5"/>
+      <figure end="0" start="0"/>
+    </annotation>
+    <annotation>
+      <verb end="77" start="58"/>
+      <spatialRelation end="0" start="0"/>
+      <landmark end="0" start="0"/>
+      <figure end="0" start="0"/>
+    </annotation>
+    <annotation>
+      <verb end="94" start="82"/>
+      <spatialRelation end="101" start="95"/>
+      <landmark end="135" start="102"/>
+      <figure end="0" start="0"/>
+    </annotation>
+    <annotation>
+      <verb end="215" start="213"/>
+      <spatialRelation end="0" start="0"/>
+      <landmark end="227" start="216"/>
+      <figure end="212" start="175"/>
+    </annotation>
+  </instruction>
+  <instruction>
+    <annotation>
+      <verb end="63" start="59"/>
+      <spatialRelation end="4" start="0"/>
+      <landmark end="58" start="5"/>
+      <figure end="0" start="0"/>
+    </annotation>
+    <annotation>
+      <verb end="63" start="59"/>
+      <spatialRelation end="75" start="64"/>
+      <landmark end="0" start="0"/>
+      <figure end="0" start="0"/>
+    </annotation>
+    <annotation>
+      <verb end="63" start="59"/>
+      <spatialRelation end="83" start="76"/>
+      <landmark end="99" start="84"/>
+      <figure end="0" start="0"/>
+    </annotation>
+    <annotation>
+      <verb end="63" start="59"/>
+      <spatialRelation end="119" start="104"/>
+      <landmark end="149" start="120"/>
+      <figure end="0" start="0"/>
+    </annotation>
+    <annotation>
+      <verb end="155" start="151"/>
+      <spatialRelation end="162" start="156"/>
+      <landmark end="212" start="163"/>
+      <figure end="0" start="0"/>
+    </annotation>
+    <annotation>
+      <verb end="216" start="214"/>
+      <spatialRelation end="224" start="217"/>
+      <landmark end="227" start="225"/>
+      <figure end="0" start="0"/>
+    </annotation>
+    <annotation>
+      <verb end="238" start="232"/>
+      <spatialRelation end="242" start="242"/>
+      <landmark end="253" start="242"/>
+      <figure end="0" start="0"/>
+    </annotation>
+  </instruction>
+  <instruction>
+    <annotation>
+      <verb end="43" start="39"/>
+      <spatialRelation end="4" start="0"/>
+      <landmark end="38" start="5"/>
+      <figure end="0" start="0"/>
+    </annotation>
+    <annotation>
+      <verb end="43" start="39"/>
+      <spatialRelation end="48" start="44"/>
+      <landmark end="62" start="49"/>
+      <figure end="0" start="0"/>
+    </annotation>
+    <annotation>
+      <verb end="76" start="67"/>
+      <spatialRelation end="83" start="77"/>
+      <landmark end="103" start="84"/>
+      <figure end="0" start="0"/>
+    </annotation>
+    <annotation>
+      <verb end="117" start="105"/>
+      <spatialRelation end="0" start="0"/>
+      <landmark end="0" start="0"/>
+      <figure end="0" start="0"/>
+    </annotation>
+    <annotation>
+      <verb end="122" start="118"/>
+      <spatialRelation end="129" start="123"/>
+      <landmark end="150" start="130"/>
+      <figure end="0" start="0"/>
+    </annotation>
+    <annotation>
+      <verb end="172" start="155"/>
+      <spatialRelation end="179" start="173"/>
+      <landmark end="198" start="180"/>
+      <figure end="0" start="0"/>
+    </annotation>
+    <annotation>
+      <verb end="228" start="226"/>
+      <spatialRelation end="0" start="0"/>
+      <landmark end="245" start="229"/>
+      <figure end="225" start="200"/>
+    </annotation>
+  </instruction>
+  <instruction>
+    <annotation>
+      <verb end="102" start="98"/>
+      <spatialRelation end="4" start="0"/>
+      <landmark end="96" start="5"/>
+      <figure end="0" start="0"/>
+    </annotation>
+    <annotation>
+      <verb end="102" start="98"/>
+      <spatialRelation end="109" start="103"/>
+      <landmark end="123" start="110"/>
+      <figure end="0" start="0"/>
+    </annotation>
+    <annotation>
+      <verb end="144" start="142"/>
+      <spatialRelation end="0" start="0"/>
+      <landmark end="187" start="145"/>
+      <figure end="141" start="125"/>
+    </annotation>
+  </instruction>
+  <instruction>
+    <annotation>
+      <verb end="53" start="41"/>
+      <spatialRelation end="4" start="0"/>
+      <landmark end="40" start="5"/>
+      <figure end="0" start="0"/>
+    </annotation>
+    <annotation>
+      <verb end="53" start="41"/>
+      <spatialRelation end="58" start="54"/>
+      <landmark end="76" start="59"/>
+      <figure end="0" start="0"/>
+    </annotation>
+    <annotation>
+      <verb end="86" start="78"/>
+      <spatialRelation end="89" start="87"/>
+      <landmark end="103" start="90"/>
+      <figure end="0" start="0"/>
+    </annotation>
+    <annotation>
+      <verb end="86" start="78"/>
+      <spatialRelation end="109" start="104"/>
+      <landmark end="175" start="110"/>
+      <figure end="0" start="0"/>
+    </annotation>
+    <annotation>
+      <verb end="117" start="114"/>
+      <spatialRelation end="120" start="118"/>
+      <landmark end="175" start="121"/>
+      <figure end="113" start="110"/>
+    </annotation>
+    <annotation>
+      <verb end="183" start="181"/>
+      <spatialRelation end="0" start="0"/>
+      <landmark end="199" start="184"/>
+      <figure end="181" start="177"/>
+    </annotation>
+  </instruction>
+  <instruction>
+    <annotation>
+      <verb end="0" start="0"/>
+      <spatialRelation end="4" start="0"/>
+      <landmark end="81" start="5"/>
+      <figure end="0" start="0"/>
+    </annotation>
+    <annotation>
+      <verb end="93" start="82"/>
+      <spatialRelation end="98" start="94"/>
+      <landmark end="116" start="99"/>
+      <figure end="0" start="0"/>
+    </annotation>
+    <annotation>
+      <verb end="136" start="119"/>
+      <spatialRelation end="148" start="137"/>
+      <landmark end="168" start="149"/>
+      <figure end="0" start="0"/>
+    </annotation>
+    <annotation>
+      <verb end="177" start="173"/>
+      <spatialRelation end="185" start="178"/>
+      <landmark end="218" start="186"/>
+      <figure end="0" start="0"/>
+    </annotation>
+    <annotation>
+      <verb end="226" start="224"/>
+      <spatialRelation end="0" start="0"/>
+      <landmark end="243" start="227"/>
+      <figure end="224" start="220"/>
+    </annotation>
+  </instruction>
+  <instruction>
+    <annotation>
+      <verb end="5" start="0"/>
+      <spatialRelation end="9" start="9"/>
+      <landmark end="60" start="9"/>
+      <figure end="0" start="0"/>
+    </annotation>
+    <annotation>
+      <verb end="66" start="62"/>
+      <spatialRelation end="78" start="67"/>
+      <landmark end="96" start="79"/>
+      <figure end="0" start="0"/>
+    </annotation>
+    <annotation>
+      <verb end="110" start="101"/>
+      <spatialRelation end="0" start="0"/>
+      <landmark end="0" start="0"/>
+      <figure end="0" start="0"/>
+    </annotation>
+    <annotation>
+      <verb end="123" start="112"/>
+      <spatialRelation end="129" start="124"/>
+      <landmark end="169" start="130"/>
+      <figure end="0" start="0"/>
+    </annotation>
+    <annotation>
+      <verb end="137" start="134"/>
+      <spatialRelation end="140" start="138"/>
+      <landmark end="169" start="141"/>
+      <figure end="133" start="130"/>
+    </annotation>
+    <annotation>
+      <verb end="175" start="171"/>
+      <spatialRelation end="0" start="0"/>
+      <landmark end="184" start="176"/>
+      <figure end="0" start="0"/>
+    </annotation>
+    <annotation>
+      <verb end="201" start="199"/>
+      <spatialRelation end="0" start="0"/>
+      <landmark end="218" start="202"/>
+      <figure end="198" start="186"/>
+    </annotation>
+  </instruction>
+  <instruction>
+    <annotation>
+      <verb end="58" start="46"/>
+      <spatialRelation end="4" start="0"/>
+      <landmark end="45" start="5"/>
+      <figure end="0" start="0"/>
+    </annotation>
+    <annotation>
+      <verb end="58" start="46"/>
+      <spatialRelation end="63" start="59"/>
+      <landmark end="81" start="64"/>
+      <figure end="0" start="0"/>
+    </annotation>
+    <annotation>
+      <verb end="94" start="87"/>
+      <spatialRelation end="0" start="0"/>
+      <landmark end="141" start="95"/>
+      <figure end="87" start="84"/>
+    </annotation>
+    <annotation>
+      <verb end="162" start="160"/>
+      <spatialRelation end="154" start="144"/>
+      <landmark end="159" start="155"/>
+      <figure end="194" start="163"/>
+    </annotation>
+    <annotation>
+      <verb end="201" start="196"/>
+      <spatialRelation end="0" start="0"/>
+      <landmark end="215" start="202"/>
+      <figure end="0" start="0"/>
+    </annotation>
+    <annotation>
+      <verb end="233" start="231"/>
+      <spatialRelation end="0" start="0"/>
+      <landmark end="250" start="234"/>
+      <figure end="230" start="217"/>
+    </annotation>
+  </instruction>
+</session>
