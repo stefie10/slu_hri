@@ -1,0 +1,63 @@
+here=File.dirname(__FILE__)
+tklib_home=File.expand_path("#{here}/../../../../")
+d1_home="#{tklib_home}/data/directions/direction_floor_1"
+d3_home="#{tklib_home}/data/directions/direction_floor_3"
+d8_full_home="#{tklib_home}/data/directions/direction_floor_8_full"
+
+ENV['TKLIB_HOME'] = tklib_home
+
+ENV['PYTHONPATH'] = ["#{tklib_home}/utilities",
+                     "#{tklib_home}/cutilities/python",
+                     "#{tklib_home}/pytools/vision/src"
+                    ].join(':')
+
+
+$debug_python = (ENV['DEBUG_PYTHON'] or false)
+$valgrind_python = (ENV['VALGRIND_PYTHON'] or false)
+def python(file)
+  if ($debug_python)
+    sh "gdb --args python #{file}"
+  elsif  ($valgrind_python)
+    sh "valgrind --error-limit=no --leak-check=full python #{file}"         
+  else
+    sh "python #{file}"
+  end
+end
+
+task :python do
+  sh "python"
+end
+
+task :pythonPath do
+  puts ENV['PYTHONPATH']
+end
+
+
+########################################################################
+#  Tester functions for C utilities
+########################################################################
+
+word = ENV['WORD']
+
+desc "view_likelihood_map_d3"
+task :lmap_d8_full do
+  python("flickr_compute_most_likely_locations.py #{word} #{d8_full_home}/direction_floor_8_full_filled.cmf.gz #{d8_full_home}/tags/df8_full_tags.tag #{tklib_home}/data/flickr/flickr_cache.pck");
+end
+
+desc "view_likelihood_map_d3"
+task :lmap_d3 do
+  python("flickr_compute_most_likely_locations.py #{word} #{d3_home}/direction_floor_3.cmf.gz #{d3_home}/tags/df3_tags.tag #{tklib_home}/data/flickr/flickr_cache.pck");
+end
+
+
+
+desc "view_likelihood_map_d3"
+task :lmap_d3_small do
+  python("flickr_compute_most_likely_locations.py #{word} #{d3_home}/direction_floor_3_small_filled.cmf #{d3_home}/tags/df3_small_tags.tag #{tklib_home}/data/flickr/flickr_cache.pck");
+end
+
+
+desc "view_likelihood_map_d3"
+task :lmap_d3_2 do
+  python("flickr_compute_most_likely_locations.py #{word} #{d3_home}/../direction_floor_3_sr/log4_s3.cmf.gz #{d3_home}/../direction_floor_3_sr/log4_s3.tag #{tklib_home}/data/flickr/flickr_cache.pck");
+end
