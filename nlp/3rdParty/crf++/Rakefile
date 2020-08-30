@@ -1,6 +1,5 @@
 desc "setup"
 task :setup do
-  sh "tar xzf CRF++-0.53.tar.gz"
   sh "cd CRF++-0.53 && ./configure && make"
   sh "cd CRF++-0.53/python && CFLAGS=-I.. LDFLAGS=-L../.libs python setup.py build"
 end
