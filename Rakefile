@@ -25,6 +25,7 @@ task :build do
   sh "cd pytools/gsl_utilities && make"
   sh "cd pytools/spatial_features && make"
   sh "cd cutilities && rake build"
+  sh "cd data/flickr && bunzip2 -k flickr_cache.pck.bz2"
   sh "cd nlp/c_src && make"
   sh "echo \"import nltk; nltk.download('wordnet')\" | rake python"
   sh "echo \"import nltk; nltk.download('punkt')\" | rake python"
